@@ -22,10 +22,11 @@
       linuxPackages = in_pkgs.linuxPackages_latest;
     };
 
-  # Networking
+  # Networking:
 
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
+   wifi.powersave = false;
    
    # Sets your time zone.
    time.timeZone = "Europe/Bratislava";
@@ -54,16 +55,22 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   
-  # Specifies graphics card setting, Intel here
+  # Specifies graphics card setting, Intel here:
   services.xserver.videoDrivers = [ "modesetting" ];
   services.xserver.useGlamor = true;
 
-  # Enable the GNOME Desktop Environment.
+  # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  
+  # Set the default user shell to fish: 
+    {   
+      programs.fish.enable = true;
+      users.defaultUserShell = pkgs.fish;
+    }
 
   # Configure keymap in X11
-   services.xserver.layout = "gb";
+   services.xserver.layout = "gb,sk";
    services.xserver.xkbOptions = "eurosign:e";
 
   # Allow UNfree licenses
@@ -83,7 +90,8 @@
    
    # Font settings:
    fonts.fontconfig.enable = true;
-  fonts = {
+   fonts.fontconfig.dpi=96; # font size in xterm console
+   fonts = {
     fontDir = {
       enable = true;
     };
@@ -95,9 +103,16 @@
    hardware.pulseaudio.enable = true;
    hardware.pulseaudio.package = pkgs.pulseaudioFull;
 
-  # Enable touchpad support (enabled default in most desktopManagers).
+  # Enable touchpad support:
    services.xserver.libinput.enable = true;
-
+   
+  # Required for screen-lock-on-suspend functionality.
+  services.logind.extraConfig = ''
+    LidSwitchIgnoreInhibited=False
+    HandleLidSwitch=suspend
+    HoldoffTimeoutSec=10
+  '';
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.halcek = {
      isNormalUser = true;
@@ -134,18 +149,33 @@
      pinentry
      certbot
      
-     # Internet
+   # Internet
      firefox
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
      croc # Computer-to-computer file transfer
+     
+   # Communication
+     mirage-im # A Matrix.org client
+     signal-desktop
+     dino # A XMPP client
+     
+   # Media
+     cozy
+     vlc
+     python39Packages.python-vlc
+     sublime-music
+     ocenaudio
 
     # System
       git
       wget
       alacritty
+      zenith
+      neofetch
       mesa
       wpa_supplicant
+      webkitgtk
       gnomeExtensions.hide-top-bar
       gnomeExtensions.new-mail-indicator
       youtube-dl
@@ -159,16 +189,33 @@
      enableSSHSupport = true;
    };
    
+  # Provides acess to the NixOS unstable for certain apps, if necessary:
+   
+   packageOverrides = pkgs: {
+    unstable = import <nixos-unstable> {
+      config = config.nixpkgs.config;
+    };
+  };
+   
    # List the services that you want to enable:
 
   # Enable the OpenSSH daemon:
    services.openssh.enable = true;
+   
+  # Start ssh-agent as a systemd user service
+   programs.ssh.startAgent = true;
+   
+  # Enable a smart card reader
+   services.pcscd.enable = true;
 
   # Enable Bluetooth:
    hardware.bluetooth.enable = true;
 
   # Enable auto-mouting of connected USB devices
    services.devmon.enable = true;
+   
+  # Enable automatic updatedb
+   services.locate.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -183,5 +230,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
-
 }
