@@ -28,6 +28,11 @@
    networking.networkmanager.enable = true; # Sets-up the wireless network
    wifi.powersave = false;
    
+  # Workaround for the no network after resume issue:
+  powerManagement.resumeCommands = ''
+    ${pkgs.systemd}/bin/systemctl restart wpa_supplicant
+  '';
+   
    # Sets your time zone.
    time.timeZone = "Europe/Bratislava";
 
@@ -117,7 +122,7 @@
    users.users.halcek = {
      isNormalUser = true;
       home = "/home/halcek";
-     extraGroups = [ "wheel" "audio" "networkmanager"]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "audio" "video" "network" "networkmanager"]; # Enable ‘sudo’ for the user.
    };
    
    # List packages installed in system profile. To search, run:
