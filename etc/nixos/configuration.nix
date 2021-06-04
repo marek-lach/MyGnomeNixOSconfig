@@ -129,7 +129,7 @@
   # $ nix search wget
    environment.systemPackages = with pkgs; [
 
-  # Editors and writig
+  # Editors and writig:
      emacs  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed>
      vnote  # For larger research documents
      trilium-desktop # Hierarchically linked notes
@@ -138,14 +138,13 @@
      gnome.gspell
      libreoffice-fresh-unwrapped
 
-   # Spell-checkers
-
+   # Spell-checkers:
      aspellDicts.en
      hunspellDicts.en-gb-large
      aspellDicts.sk
      hunspellDicts.sk-sk
 
-   # VPNs and Firewall
+   # VPNs and Firewall:
      openvpn
      pptp
      openssl
@@ -154,13 +153,13 @@
      pinentry
      certbot
      
-   # Internet
+   # Internet:
      firefox
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
      croc # Computer-to-computer file transfer
      
-   # Communication
+   # Communication:
      mirage-im # A Matrix.org client
      signal-desktop
      dino # A XMPP client
@@ -168,9 +167,11 @@
    # Media
      cozy
      vlc
+     celluloid
      python39Packages.python-vlc
      sublime-music
      ocenaudio
+     reaper
 
     # System
       git
