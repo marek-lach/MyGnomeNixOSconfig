@@ -183,6 +183,7 @@
       wpa_supplicant
       webkitgtk
       gnomeExtensions.hide-top-bar
+      gnomeExtensions.material-shell
       gnomeExtensions.new-mail-indicator
       youtube-dl
    ];
