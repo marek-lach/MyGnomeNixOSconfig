@@ -26,7 +26,6 @@
 
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
-   wifi.powersave = false;
    
   # Workaround for the no network after resume issue:
   powerManagement.resumeCommands = ''
@@ -67,12 +66,6 @@
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  
-  # Set the default user shell to fish: 
-    {   
-      programs.fish.enable = true;
-      users.defaultUserShell = pkgs.fish;
-    }
 
   # Configure keymap in X11
    services.xserver.layout = "gb,sk";
@@ -196,21 +189,13 @@
      enableSSHSupport = true;
    };
    
-  # Provides acess to the NixOS unstable for certain apps, if necessary:
-   
-   packageOverrides = pkgs: {
-    unstable = import <nixos-unstable> {
-      config = config.nixpkgs.config;
-    };
-  };
-   
-   # List the services that you want to enable:
+  # List the services that you want to enable:
 
   # Enable the OpenSSH daemon:
    services.openssh.enable = true;
    
   # Start ssh-agent as a systemd user service
-   programs.ssh.startAgent = true;
+   programs.ssh.startAgent = false;
    
   # Enable a smart card reader
    services.pcscd.enable = true;
