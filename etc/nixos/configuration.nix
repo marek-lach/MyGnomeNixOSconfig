@@ -68,7 +68,7 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-   services.xserver.layout = "gb,sk";
+   services.xserver.layout = "us,gb,sk";
    services.xserver.xkbOptions = "eurosign:e";
 
   # Allow UNfree licenses
@@ -130,6 +130,7 @@
      ghostscript
      gnome.gspell
      libreoffice-fresh-unwrapped
+     koreader
 
    # Spell-checkers:
      aspellDicts.en
@@ -156,14 +157,16 @@
      mirage-im # A Matrix.org client
      signal-desktop
      dino # A XMPP client
+     gnome.polari # An IRC client
+     tootle # A client for the fediverse (Mastodon/Pleroma)
      
    # Media
      cozy
      vlc
-     celluloid
+     python38Packages.python-vlc
      python39Packages.python-vlc
-     sublime-music
-     ocenaudio
+     celluloid
+     sublime-music # A subsonic client
      reaper
 
     # System
