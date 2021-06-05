@@ -105,7 +105,7 @@
    services.xserver.libinput.enable = true;
    
   # Required for screen-lock-on-suspend functionality.
-  services.logind.extraConfig = ''
+    services.logind.extraConfig = ''
     LidSwitchIgnoreInhibited=False
     HandleLidSwitch=suspend
     HoldoffTimeoutSec=10
@@ -174,6 +174,8 @@
       neofetch
       mesa
       wpa_supplicant
+      usbutils
+      pciutils
       webkitgtk
       gnomeExtensions.hide-top-bar
       gnomeExtensions.material-shell
