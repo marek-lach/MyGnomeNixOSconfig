@@ -15,21 +15,19 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use the latest kernel
-
-  # boot.kernelPackages will use linuxPackages by default, so no need to define it
   nixpkgs.config.packageOverrides = in_pkgs :
     {
       linuxPackages = in_pkgs.linuxPackages_latest;
     };
 
   # Networking:
-
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
    
   # Workaround for the no network after resume issue:
-  powerManagement.resumeCommands = ''
+    powerManagement.resumeCommands = ''
     ${pkgs.systemd}/bin/systemctl restart wpa_supplicant
+    ${pkgs.systemd}/bin/systemctl restart networkmanager
   '';
    
    # Sets your time zone.
@@ -52,7 +50,7 @@
      keyMap = "us";
    };
 
-  # Allow updating firmware
+  # Allow updating firmware:
   hardware.enableAllFirmware = true;
   services.fwupd.enable = true;
 
@@ -71,19 +69,20 @@
    services.xserver.layout = "us,gb,sk";
    services.xserver.xkbOptions = "eurosign:e";
 
-  # Allow UNfree licenses
+  # Allow UNfree licenses:
     nixpkgs.config.allowUnfree = true;
 
-  # Automatic system updates
+  # Automatic system updates:
   system.autoUpgrade.enable = true;
 
-  # OpenGL with Intel integrated GPU
+  # OpenGL, with Intel integrated GPU:
    hardware.opengl.enable = true;
    hardware.opengl.extraPackages = with pkgs; [
     vaapiIntel
+    intel-media-driver
   ];
 
-  # Enable CUPS to print documents.
+  # Enable CUPS to print documents:
    services.printing.enable = true;
    
    # Font settings:
@@ -112,6 +111,7 @@
   '';
   
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  
    users.users.halcek = {
      isNormalUser = true;
       home = "/home/halcek";
@@ -172,7 +172,7 @@
     # System
       git
       wget
-      alacritty
+      wezterm # GPU accelerated
       zenith
       neofetch
       mesa
@@ -199,16 +199,16 @@
   # Enable the OpenSSH daemon:
    services.openssh.enable = true;
    
-  # Start ssh-agent as a systemd user service
+  # Start ssh-agent as a systemd user service:
    programs.ssh.startAgent = false;
    
-  # Enable a smart card reader
+  # Enable a smart card reader:
    services.pcscd.enable = true;
 
   # Enable Bluetooth:
    hardware.bluetooth.enable = true;
 
-  # Enable auto-mouting of connected USB devices
+  # Enable auto-mouting of connected USB devices:
    services.devmon.enable = true;
    
   # Enable automatic updatedb
