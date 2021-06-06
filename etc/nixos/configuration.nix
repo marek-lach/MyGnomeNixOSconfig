@@ -4,6 +4,10 @@
 
 { config, pkgs, ... }:
 
+# Allow unfree packages to be pulled from the <unstable> channel:
+let
+ unstable = import <unstable> { config.allowUnfree = true; };
+
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -216,7 +220,7 @@
   # Enable Bluetooth:
    hardware.bluetooth.enable = true;
 
-  # Enable auto-mouting of connected USB devices:
+  # Enable auto-mouting of connected (USB/SDC) devices:
    services.devmon.enable = true;
    
   # Enable automatic updatedb
