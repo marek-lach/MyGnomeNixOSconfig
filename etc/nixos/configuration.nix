@@ -105,7 +105,9 @@ in
   # Enable sound:
    sound.enable = true;
    hardware.pulseaudio.enable = true;
+   hardware.pulseaudio.support32Bit = true;
    hardware.pulseaudio.package = pkgs.pulseaudioFull;
+   hardware.pulseaudio.zeroconf.discovery.enable = true;
    services.pipewire.enable = true;
 
   # Enable touchpad support:
