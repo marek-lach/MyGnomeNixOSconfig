@@ -6,7 +6,10 @@
 
 # Allow unfree packages to be pulled from the <unstable> channel:
 let
- unstable = import <unstable> { config.allowUnfree = true; };
+ unstable = import <unstable> {
+ config = config.nixpkgs.config;
+ config.allowUnfree = true;
+ };
 
 {
   imports =
@@ -210,9 +213,6 @@ let
 
   # Enable the OpenSSH daemon:
    services.openssh.enable = true;
-   
-  # Start ssh-agent as a systemd user service:
-   programs.ssh.startAgent = false;
    
   # Enable a smart card reader:
    services.pcscd.enable = true;
