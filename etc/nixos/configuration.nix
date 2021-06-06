@@ -4,13 +4,11 @@
 
 { config, pkgs, ... }:
 
-# Allow unfree packages to be pulled from the <unstable> channel:
 let
- unstable = import <unstable> {
- config = config.nixpkgs.config;
- config.allowUnfree = true;
- };
-
+  unstableTarball =
+    fetchTarball
+      https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
