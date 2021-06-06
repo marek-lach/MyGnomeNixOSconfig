@@ -30,7 +30,7 @@
     ${pkgs.systemd}/bin/systemctl restart networkmanager
   '';
    
-   # Sets your time zone:
+   # Sets the time zone:
    time.timeZone = "Europe/Bratislava";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
@@ -101,6 +101,7 @@
    sound.enable = true;
    hardware.pulseaudio.enable = true;
    hardware.pulseaudio.package = pkgs.pulseaudioFull;
+   services.pipewire.enable = true;
 
   # Enable touchpad support:
    services.xserver.libinput.enable = true;
@@ -158,6 +159,7 @@
    # Communication:
      mirage-im # A Matrix.org client
      signal-desktop
+     skype
      dino # A XMPP client
      gnome.polari # An IRC client
      tootle # A client for the fediverse (Mastodon/Pleroma)
@@ -185,6 +187,7 @@
       usbutils
       pciutils
       webkitgtk
+      qgnomeplatform
       gnomeExtensions.hide-top-bar
       gnomeExtensions.material-shell
       gnomeExtensions.new-mail-indicator
