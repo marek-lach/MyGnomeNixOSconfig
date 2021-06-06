@@ -30,7 +30,7 @@
     ${pkgs.systemd}/bin/systemctl restart networkmanager
   '';
    
-   # Sets your time zone.
+   # Sets your time zone:
    time.timeZone = "Europe/Bratislava";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
@@ -65,7 +65,7 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  # Configure keymap in X11
+  # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
    services.xserver.xkbOptions = "eurosign:e";
 
@@ -172,8 +172,11 @@
     # System
       git
       wget
+      unzip
+      unrar
+      gnutar
       wezterm # GPU accelerated
-      zenith
+      zenith # System information
       neofetch
       mesa
       wpa_supplicant
