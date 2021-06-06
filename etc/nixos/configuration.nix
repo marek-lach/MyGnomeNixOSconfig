@@ -64,6 +64,7 @@
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  environment.gnome.excludePackages = [ pkgs.gnome.totem pkgs.gnome-tour ];
 
   # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
@@ -175,7 +176,7 @@
       unzip
       unrar
       gnutar
-      wezterm # GPU accelerated
+      alacritty # GPU accelerated
       zenith # System information
       neofetch
       mesa
