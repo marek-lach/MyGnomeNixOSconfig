@@ -62,6 +62,7 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.synaptics.enable = true;
   
   # Specifies graphics card setting, Intel here:
   services.xserver.videoDrivers = [ "modesetting" ];
@@ -109,9 +110,6 @@ in
    hardware.pulseaudio.package = pkgs.pulseaudioFull;
    hardware.pulseaudio.zeroconf.discovery.enable = true;
    services.pipewire.enable = true;
-
-  # Enable touchpad support:
-   services.xserver.libinput.enable = true;
    
   # Required for screen-lock-on-suspend functionality.
     services.logind.extraConfig = ''
@@ -210,18 +208,26 @@ in
    };
    
   # List the services that you want to enable:
+  
+   services.tlp.enable = true;
 
   # Enable the OpenSSH daemon:
    services.openssh.enable = true;
    
   # Enable a smart card reader:
    services.pcscd.enable = true;
+   
+   # Enable touchpad support:
+   services.xserver.libinput.enable = true;
+   services.gpm.enable = true; # Generic mouse support
 
   # Enable Bluetooth:
    hardware.bluetooth.enable = true;
 
   # Enable auto-mouting of connected (USB/SDC) devices:
    services.devmon.enable = true;
+   services.dbus.enable = true;
+   services.smartd.enable = true;
    
   # Enable automatic updatedb
    services.locate.enable = true;
