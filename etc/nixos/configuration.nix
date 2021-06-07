@@ -157,6 +157,7 @@ in
      
    # Internet:
      firefox
+     gnome-feeds # An RSS reader
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
      croc # Computer-to-computer file transfer
@@ -168,6 +169,7 @@ in
      dino # A XMPP client
      gnome.polari # An IRC client
      tootle # A client for the fediverse
+     cawbird # For Twitter
      
    # Media
      cozy
@@ -178,6 +180,7 @@ in
      celluloid
      sublime-music # A subsonic client
      reaper
+     muse # A DAW
 
     # System
       git
@@ -210,6 +213,7 @@ in
    
   # List the services that you want enabled:
   
+  # Power management:
    services.tlp.enable = true;
 
   # Enable the OpenSSH daemon:
