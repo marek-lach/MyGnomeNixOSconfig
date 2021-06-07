@@ -22,7 +22,7 @@ in
   # Use the latest kernel
   nixpkgs.config.packageOverrides = in_pkgs :
     {
-      linuxPackages = in_pkgs.linuxPackages_latest;
+      linuxPackages = in_pkgs.linuxPackages_xanmod.kernel;
     };
 
   # Networking:
