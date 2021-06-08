@@ -14,6 +14,25 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+    
+  # Get mesa running:
+   mesa_version = "21.1.0";
+   mesa_src = pkgs.fetchurl {
+     url = "https://mesa.freedesktop.org/archive/mesa-${mesa_version}.tar.xz";
+     sha256 = "1y0z3ff685ql2l3pqyfrbh0j6ipr64vh0d0h7pnkl3cp487g2a01";
+   };
+   mesa_21_1 = pkgs.mesa.overrideAttrs (a: { src = mesa_src; version = mesa_version; patches = sublist 1 2 a.patches; });
+   mesa_21_1_32 = pkgs.pkgsi686Linux.mesa.overrideAttrs (a: { src = mesa_src; version = mesa_version; patches = sublist 1 2 a.patches; });
+ in
+{
+    hardware = {
+        opengl = {
+           driSupport32Bit = true;
+           package = mkForce mesa_21_1.drivers;
+           package32 = mkForce mesa_21_1_32.drivers;
+        };
+    };
+  }
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -87,8 +106,11 @@ in
    hardware.opengl.enable = true;
    hardware.opengl.extraPackages = with pkgs; [
     vaapiIntel
+    vaapiVdpau
+    libvdpau-va-gl
     intel-media-driver
   ];
+    driSupport32Bit = true;
 
   # Enable CUPS to print documents:
    services.printing.enable = true;
@@ -126,7 +148,7 @@ in
      extraGroups = [ "wheel" "audio" "video" "network" "networkmanager"]; # Enable ‘sudo’ for the user.
    };
    
-   # List packages installed in system profile. To search, run:
+  # List of the packages installed in system profile. To search, run:
   # $ nix search wget
    environment.systemPackages = with pkgs; [
 
@@ -134,11 +156,12 @@ in
      emacs  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed>
      vnote  # For larger research documents
      trilium-desktop # Hierarchically linked notes
+     zim # A personal knowledge base
      obsidian # Note connections
      pandoc # A universal document converter
      ghostscript
      gnome.gspell
-     libreoffice-fresh-unwrapped
+     libreoffice-fresh
      koreader
 
    # Spell-checkers:
@@ -154,7 +177,7 @@ in
      libressl
      gnupg
      pinentry
-     certbot
+     certbot # Renews fresh SSL certificates
      
    # Internet:
      firefox
@@ -173,12 +196,13 @@ in
      cawbird # For Twitter
      
    # Media
-     cozy
-     pragha
+     cozy # Audiobooks
+     pragha # A music player
      vlc
      python38Packages.python-vlc
      python39Packages.python-vlc
-     celluloid
+     celluloid # Front-end for MPV
+     youtube-dl # An internet video downloader
      sublime-music # A subsonic client
      reaper # A DAW
      ardour # A free-software DAW
@@ -192,7 +216,7 @@ in
       alacritty # GPU accelerated
       zenith # System information
       neofetch
-      mesa
+      mesa # For 3D graphics (see beginning of spec.)
       wpa_supplicant
       usbutils
       pciutils
@@ -201,7 +225,6 @@ in
       gnomeExtensions.hide-top-bar
       gnomeExtensions.material-shell
       gnomeExtensions.new-mail-indicator
-      youtube-dl
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -235,8 +258,11 @@ in
    services.dbus.enable = true;
    services.smartd.enable = true;
    
-  # Enable automatic updatedb
+  # Enable automatic updatedb:
    services.locate.enable = true;
+   
+  # Enable simultaneous pkgs building:
+   enableParallelBuilding = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
