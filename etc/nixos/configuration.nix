@@ -134,6 +134,7 @@ in
      emacs  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed>
      vnote  # For larger research documents
      trilium-desktop # Hierarchically linked notes
+     obsidian # Note connections
      pandoc # A universal document converter
      ghostscript
      gnome.gspell
@@ -179,8 +180,8 @@ in
      python39Packages.python-vlc
      celluloid
      sublime-music # A subsonic client
-     reaper
-     muse # A DAW
+     reaper # A DAW
+     ardour # A free-software DAW
 
     # System
       git
