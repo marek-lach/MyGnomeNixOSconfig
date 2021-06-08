@@ -172,6 +172,7 @@ in
 
    # VPNs and Firewall:
      openvpn
+     mullvad-vpn
      pptp
      openssl
      libressl
@@ -225,6 +226,7 @@ in
       gnomeExtensions.hide-top-bar
       gnomeExtensions.material-shell
       gnomeExtensions.new-mail-indicator
+      cinnamon.xapps
    ];
 
   # Some programs need SUID wrappers, can be configured further or are
