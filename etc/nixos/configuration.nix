@@ -1,5 +1,5 @@
 # Edit this configuration file to define what should be installed on
-# your system. You can apply it with 'nixos-rebuild switch'.
+# your system. You can apply it with 'nixos-rebuild switch' (--upgrade)
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
@@ -46,6 +46,7 @@ in
     };
 
   # Networking:
+   services.httpd.enable = true;
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
    networking.wireless.enable = true;
@@ -222,7 +223,8 @@ in
       zenith # System information
       neofetch
       mesa # For 3D graphics (see beginning of spec.)
-      wpa_supplicant
+      driversi686Linux.mesa
+      wpa_supplicant (see 'Networking' section)
       usbutils
       pciutils
       webkitgtk
