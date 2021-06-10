@@ -1,5 +1,6 @@
 # Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
+# your system. You can apply it with 'nixos-rebuild switch'.
+# Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
@@ -47,6 +48,7 @@ in
   # Networking:
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
+   networking.wireless.enable = true;
    
   # Workaround for the no network after resume issue:
     powerManagement.resumeCommands = ''
@@ -56,6 +58,8 @@ in
    
    # Sets the time zone:
    time.timeZone = "Europe/Bratislava";
+   services.ntp.enable # Sync time over network
+   
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -181,7 +185,7 @@ in
      certbot # Renews fresh SSL certificates
      
    # Internet:
-     firefox
+     firefox-wayland
      gnome-feeds # An RSS reader
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
