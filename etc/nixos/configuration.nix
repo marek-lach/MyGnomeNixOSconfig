@@ -94,7 +94,7 @@ in
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.totem pkgs.gnome-tour  ];
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.totem pkgs.gnome.geary pkgs.gnome-tour ];
 
   # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
@@ -187,6 +187,7 @@ in
    # Internet:
      firefox-wayland
      evolution # A better email client + calendar
+     evolution-data-server
      gnome-feeds # An RSS reader
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
@@ -250,6 +251,7 @@ in
 
   # Enable the OpenSSH daemon:
    services.openssh.enable = true;
+   services.mullvad-daemon.enable = true; # Make sure Mullvad's ready
    
   # Enable a smart card reader:
    services.pcscd.enable = true;
@@ -269,7 +271,7 @@ in
   # Enable automatic updatedb:
    services.locate.enable = true;
    
-  # Enable simultaneous pkgs building:
+  # Enable building of packages simultaneously:
    enableParallelBuilding = true;
 
   # Open ports in the firewall.
