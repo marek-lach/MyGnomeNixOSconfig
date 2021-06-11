@@ -39,10 +39,10 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use the latest kernel
+  # Make use of the Zen kernel:
   nixpkgs.config.packageOverrides = in_pkgs :
     {
-      linuxPackages = in_pkgs.linuxPackages_xanmod.kernel;
+      linuxPackages = in_pkgs.linuxPackages_zen.kernel;
     };
 
   # Networking:
