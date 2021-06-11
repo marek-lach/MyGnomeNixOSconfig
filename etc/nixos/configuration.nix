@@ -46,7 +46,6 @@ in
     };
 
   # Networking:
-   services.httpd.enable = true;
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
    networking.wireless.enable = true;
@@ -187,6 +186,7 @@ in
      
    # Internet:
      firefox-wayland
+     evolution # A better email client + calendar
      gnome-feeds # An RSS reader
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
@@ -203,15 +203,14 @@ in
      
    # Media
      cozy # Audiobooks
-     pragha # A music player
+     pragha # A competent music player
      vlc
      python38Packages.python-vlc
      python39Packages.python-vlc
      celluloid # Front-end for MPV
      youtube-dl # An internet video downloader
      sublime-music # A subsonic client
-     reaper # A DAW
-     ardour # A free-software DAW
+     reaper # An affordable DAW
 
     # System
       git
@@ -231,6 +230,7 @@ in
       qgnomeplatform
       gnomeExtensions.hide-top-bar
       gnomeExtensions.material-shell
+      gnomeExtensions.showtime-horizontal
       gnomeExtensions.new-mail-indicator
       cinnamon.xapps
    ];
