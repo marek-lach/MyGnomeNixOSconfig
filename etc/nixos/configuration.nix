@@ -94,7 +94,7 @@ in
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.totem pkgs.gnome.geary pkgs.gnome-tour ];
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.geary pkgs.gnome-tour ];
 
   # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
@@ -166,7 +166,7 @@ in
      ghostscript
      gnome.gspell
      libreoffice-fresh
-     koreader
+     koreader # An ebook, and PDF reader
 
    # Spell-checkers:
      aspellDicts.en
@@ -228,6 +228,8 @@ in
       usbutils
       pciutils
       webkitgtk
+      pantheon.elementary-calendar
+      gnome.mutter
       qgnomeplatform
       gnomeExtensions.hide-top-bar
       gnomeExtensions.material-shell
@@ -256,7 +258,7 @@ in
   # Enable a smart card reader:
    services.pcscd.enable = true;
    
-   # Enable touchpad support:
+  # Enable touchpad support:
    services.xserver.libinput.enable = true;
    services.gpm.enable = true; # Generic mouse support
 
