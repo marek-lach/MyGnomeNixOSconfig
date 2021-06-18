@@ -218,7 +218,7 @@ in
       unzip
       unrar
       gnutar
-      alacritty # GPU accelerated
+      kitty # GPU accelerated terminal emulator
       zenith # System information
       neofetch
       mesa # For 3D graphics (see beginning of spec.)
