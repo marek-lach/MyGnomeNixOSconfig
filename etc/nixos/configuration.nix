@@ -94,7 +94,7 @@ in
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.geary pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
 
   # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
@@ -187,8 +187,6 @@ in
      
    # Internet:
      firefox-wayland
-     evolution # A better email client + calendar
-     evolution-data-server
      gnome-feeds # An RSS reader
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
