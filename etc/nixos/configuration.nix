@@ -203,8 +203,10 @@ in
      
    # Media
      cozy # Audiobooks
+     gnome-podcasts
      pragha # A competent music player
      vlc
+     easytag # Editing ID3 tags for musical files
      python38Packages.python-vlc
      python39Packages.python-vlc
      celluloid # Front-end for MPV
@@ -218,6 +220,7 @@ in
       unzip
       unrar
       gnutar
+      xarchiver
       kitty # GPU accelerated terminal emulator
       zenith # System information
       neofetch
@@ -230,6 +233,7 @@ in
       pantheon.elementary-calendar
       gnome.mutter
       gnome.gpaste
+      libgnome-keyring
       qgnomeplatform
       gnomeExtensions.hide-top-bar
       gnomeExtensions.material-shell
