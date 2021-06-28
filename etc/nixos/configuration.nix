@@ -186,7 +186,7 @@ in
      certbot # Renews fresh SSL certificates
      
    # Internet:
-     firefox-wayland
+     eolie # A less bloated web browser
      gnome-feeds # An RSS reader
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
@@ -220,7 +220,7 @@ in
       unzip
       unrar
       gnutar
-      xarchiver
+      mate.engrampa # Archiver front-end
       kitty # GPU accelerated terminal emulator
       zenith # System information
       neofetch
