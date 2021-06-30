@@ -1,4 +1,4 @@
-# Edit this configuration file to define what should be installed on
+## Edit this configuration file to define what should be installed on
 # your system. You can apply it with 'nixos-rebuild switch' (--upgrade)
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -6,51 +6,32 @@
 { config, pkgs, ... }:
 
 let
-  unstableTarball =
+unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-in
+ in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
     
-  # Get mesa running:
-   mesa_version = "21.1.0";
-   mesa_src = pkgs.fetchurl {
-     url = "https://mesa.freedesktop.org/archive/mesa-${mesa_version}.tar.xz";
-     sha256 = "1y0z3ff685ql2l3pqyfrbh0j6ipr64vh0d0h7pnkl3cp487g2a01";
-   };
-   mesa_21_1 = pkgs.mesa.overrideAttrs (a: { src = mesa_src; version = mesa_version; patches = sublist 1 2 a.patches; });
-   mesa_21_1_32 = pkgs.pkgsi686Linux.mesa.overrideAttrs (a: { src = mesa_src; version = mesa_version; patches = sublist 1 2 a.patches; });
- in
-{
-    hardware = {
-        opengl = {
-           driSupport32Bit = true;
-           package = mkForce mesa_21_1.drivers;
-           package32 = mkForce mesa_21_1_32.drivers;
-        };
-    };
-  }
-
-  # Use the systemd-boot EFI boot loader.
+    # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Make use of the Zen kernel:
-  nixpkgs.config.packageOverrides = in_pkgs :
+  # Make use of the latest kernel:
+   # boot.kernelPackages will use linuxPackages by default, so no need to define it
+    nixpkgs.config.packageOverrides = in_pkgs :
     {
-      linuxPackages = in_pkgs.linuxPackages_zen.kernel;
+      linuxPackages = in_pkgs.linuxPackages_latest;
     };
 
-  # Networking:
-   networking.hostName = "halcek"; # Define your hostname.
-   networking.networkmanager.enable = true; # Sets-up the wireless network
-   networking.wireless.enable = true;
+   # Networking:
+    networking.hostName = "halcek"; # Define your hostname.
+    networking.networkmanager.enable = true; # Sets-up the wireless network
    
-  # Workaround for the no network after resume issue:
+   # Workaround for the no network after resume issue:
     powerManagement.resumeCommands = ''
     ${pkgs.systemd}/bin/systemctl restart wpa_supplicant
     ${pkgs.systemd}/bin/systemctl restart networkmanager
@@ -58,23 +39,17 @@ in
    
    # Sets the time zone:
    time.timeZone = "Europe/Bratislava";
-   services.ntp.enable # Sync time over network
-   
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.wlp2s0.useDHCP = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
+   # Per-interface useDHCP will be mandatory in the future, so this generated config
+   # replicates the default behaviour.
+    networking.useDHCP = false;
+    networking.interfaces.wlp2s0.useDHCP = true;
+    
+    # Select internationalisation properties.
    i18n.defaultLocale = "en_GB.UTF-8";
-   console = {
-     font = "Lat2-Terminus16";
+    console = {
+    font = "Lat2-Terminus16";
      keyMap = "us";
    };
 
@@ -85,7 +60,6 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.synaptics.enable = true;
   
   # Specifies graphics card setting, Intel here:
   services.xserver.videoDrivers = [ "modesetting" ];
@@ -94,7 +68,7 @@ in
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
+  environment.gnome.excludePackages = [ pkgs.epiphany pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.g>
 
   # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
@@ -105,7 +79,7 @@ in
 
   # Automatic system updates:
   system.autoUpgrade.enable = true;
-
+  
   # OpenGL, with Intel integrated GPU:
    hardware.opengl.enable = true;
    hardware.opengl.extraPackages = with pkgs; [
@@ -114,7 +88,6 @@ in
     libvdpau-va-gl
     intel-media-driver
   ];
-    driSupport32Bit = true;
 
   # Enable CUPS to print documents:
    services.printing.enable = true;
@@ -135,9 +108,8 @@ in
    hardware.pulseaudio.support32Bit = true;
    hardware.pulseaudio.package = pkgs.pulseaudioFull;
    hardware.pulseaudio.zeroconf.discovery.enable = true;
-   services.pipewire.enable = true;
    
-  # Required for screen-lock-on-suspend functionality.
+   # Required for screen-lock-on-suspend functionality.
     services.logind.extraConfig = ''
     LidSwitchIgnoreInhibited=False
     HandleLidSwitch=suspend
@@ -149,15 +121,16 @@ in
    users.users.halcek = {
      isNormalUser = true;
       home = "/home/halcek";
-     extraGroups = [ "wheel" "audio" "video" "network" "networkmanager"]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "audio" "video" "network" "networkmanager"]; # Enable ‘sudo’ for the use>
    };
    
-  # List of the packages installed in system profile. To search, run:
-  # $ nix search wget
+   # List of the packages installed in system profile. To search, run:
+   # $ nix search wget
+  
    environment.systemPackages = with pkgs; [
 
   # Editors and writig:
-     emacs  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed>
+     emacs  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also insta>
      vnote  # For larger research documents
      trilium-desktop # Hierarchically linked notes
      zim # A personal knowledge base
@@ -168,8 +141,8 @@ in
      xed-editor # A less basic, basic text editor 
      libreoffice-fresh
      koreader # An ebook, and PDF reader
-
-   # Spell-checkers:
+     
+     # Spell-checkers:
      aspellDicts.en
      hunspellDicts.en-gb-large
      aspellDicts.sk
@@ -202,7 +175,7 @@ in
      cawbird # For Twitter
      
    # Media
-     cozy # Audiobooks
+     cozy # Audio-books
      gnome-podcasts
      pragha # A competent music player
      vlc
@@ -226,7 +199,7 @@ in
       neofetch
       mesa # For 3D graphics (see beginning of spec.)
       driversi686Linux.mesa
-      wpa_supplicant (see 'Networking' section)
+      wpa_supplicant
       usbutils
       pciutils
       webkitgtk
@@ -251,15 +224,11 @@ in
    };
    
   # List the services that you want enabled:
-  
-  # Power management:
-   services.tlp.enable = true;
 
   # Enable the OpenSSH daemon:
    services.openssh.enable = true;
-   services.mullvad-daemon.enable = true; # Make sure Mullvad's ready
    
-  # Enable a smart card reader:
+   # Enable a smart card reader:
    services.pcscd.enable = true;
    
   # Enable touchpad support:
@@ -277,10 +246,7 @@ in
   # Enable automatic updatedb:
    services.locate.enable = true;
    
-  # Enable building of packages simultaneously:
-   enableParallelBuilding = true;
-
-  # Open ports in the firewall.
+   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
