@@ -15,8 +15,16 @@ unstableTarball =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+
+nixpkgs.config = {
+    packageOverrides = pkgs: {
+      unstable = import unstableTarball {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
     
-    # Use the systemd-boot EFI boot loader.
+  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -142,7 +150,7 @@ unstableTarball =
      libreoffice-fresh
      koreader # An ebook, and PDF reader
      
-     # Spell-checkers:
+   # Spell-checkers:
      aspellDicts.en
      hunspellDicts.en-gb-large
      aspellDicts.sk
@@ -168,6 +176,8 @@ unstableTarball =
    # Communication:
      mirage-im # A Matrix.org client
      signal-desktop
+     teams
+     zoom-us # A necessary evil
      skype
      dino # A XMPP client
      gnome.polari # An IRC client
