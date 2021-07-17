@@ -28,6 +28,7 @@ unstableTarball =
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "btrfs" "ext4" "nfs4" "fuse" "fat32" ];
 
    # Networking:
     networking.hostName = "halcek"; # Define your hostname.
