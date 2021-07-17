@@ -13,28 +13,21 @@ unstableTarball =
 {
   imports =
     [ # Include the results of the hardware scan.
-        <nixos-hardware/common>
       ./hardware-configuration.nix
     ];
-
-nixpkgs.config = {
+    
+  nixpkgs.config.packageOverrides = in_pkgs : {
+   linuxPackages = in_pkgs.linuxPackages_latest;
     packageOverrides = pkgs: {
       unstable = import unstableTarball {
         config = config.nixpkgs.config;
       };
     };
-  };
+  };  
     
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # Make use of the latest kernel:
-   # boot.kernelPackages will use linuxPackages by default, so no need to define it
-    nixpkgs.config.packageOverrides = in_pkgs :
-    {
-      linuxPackages = in_pkgs.linuxPackages_latest;
-    };
 
    # Networking:
     networking.hostName = "halcek"; # Define your hostname.
