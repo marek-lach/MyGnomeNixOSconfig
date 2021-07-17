@@ -13,6 +13,7 @@ unstableTarball =
 {
   imports =
     [ # Include the results of the hardware scan.
+        <nixos-hardware/common>
       ./hardware-configuration.nix
     ];
 
