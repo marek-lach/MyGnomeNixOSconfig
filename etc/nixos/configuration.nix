@@ -13,7 +13,7 @@
     
   nixpkgs.config = {
     packageOverrides = in_pkgs: {
-    linuxPackages = linuxPackages_latest;
+    linuxPackages = in_pkgs.linuxPackages_latest;
     config = config.nixpkgs.config;
     };
   };  
