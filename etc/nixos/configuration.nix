@@ -12,11 +12,10 @@
     ];
     
   nixpkgs.config = {
-    packageOverrides = pkgs: {
-    linuxPackages = in_pkgs.linuxPackages_latest;
+    packageOverrides = in_pkgs: {
+    linuxPackages = linuxPackages_latest;
       unstable = import unstableTarball {
         config = config.nixpkgs.config;
-      };
     };
   };  
     
