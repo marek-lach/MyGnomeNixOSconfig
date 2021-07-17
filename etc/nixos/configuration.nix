@@ -5,30 +5,25 @@
 
 { config, pkgs, ... }:
 
-let
-unstableTarball =
-    fetchTarball
-      https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
- in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
     
-  nixpkgs.config.packageOverrides = in_pkgs : {
-   linuxPackages = in_pkgs.linuxPackages_latest;
+  nixpkgs.config = {
     packageOverrides = pkgs: {
+    linuxPackages = in_pkgs.linuxPackages_latest;
       unstable = import unstableTarball {
         config = config.nixpkgs.config;
       };
     };
   };  
     
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "btrfs" "ext4" "nfs4" "fuse" "fat32" ];
+   # Use the systemd-boot EFI boot loader.
+   boot.loader.systemd-boot.enable = true;
+   boot.loader.efi.canTouchEfiVariables = true;
+   boot.supportedFilesystems = [ "btrfs" "ext4" "nfs4" "fuse" "fat32" ];
 
    # Networking:
     networking.hostName = "halcek"; # Define your hostname.
