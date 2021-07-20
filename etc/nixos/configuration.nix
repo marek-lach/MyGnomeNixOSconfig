@@ -34,7 +34,7 @@ NUR =
   systemd.services.systemd-udev-settle.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "btrfs" "ext4" "nfs4" "fuse" ];
+  boot.supportedFilesystems = [ "btrfs" ];
 
   # Better SSD support:
    services.fstrim.enable = true; # Enable TRIM
@@ -231,7 +231,6 @@ NUR =
       qgnomeplatform
       gnomeExtensions.night-theme-switcher # Switch to a dark theme at night
       gnomeExtensions.hide-top-bar
-      gnomeExtensions.showtime-horizontal
       gnomeExtensions.new-mail-indicator
       cinnamon.xapps
    ];
