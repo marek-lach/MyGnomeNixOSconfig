@@ -20,7 +20,7 @@ NUR =
     nixpkgs.config = {
 
     packageOverrides = pkgs: {
-    linuxPackages = pkgs.linuxPackages_zen; # Use the latest kernel
+    linuxPackages = pkgs.linuxPackages_xanmod; # Use the latest kernel
     NUR = import NUR {
     nixos-unstable = import nixos-unstable {
     config = config.nixpkgs.config;
@@ -29,13 +29,16 @@ NUR =
    };
   };
   
-# Use the systemd-boot EFI boot loader.
+ # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
-  boot.blacklistedKernelModules= [ "nouveau" ]
   systemd.services.systemd-udev-settle.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" "ext4" "nfs4" "fuse" ];
+
+  # Better SSD support:
+   services.fstrim.enable = true; # Enable TRIM
+   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];   
 
   # Networking:
    networking.hostName = "halcek"; # Define your hostname.
@@ -44,9 +47,12 @@ NUR =
    
    # Workaround for the no network after resume issue:
     powerManagement.resumeCommands = ''
-    ${pkgs.systemd}/bin/systemctl restart wpa_supplicant
     ${pkgs.systemd}/bin/systemctl restart networkmanager
   '';
+
+   # Security:
+   security.audit.enable = true;
+   security.auditd.enable = true;
    
    # Sets the time zone:
    time.timeZone = "Europe/Bratislava";
@@ -63,21 +69,34 @@ NUR =
   hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
   hardware.cpu.intel.updateMicrocode = true; # For Intel-only CPUs
+   
+  # Specifies graphics card setting, Intel here:
+  services.xserver.videoDrivers = [ "intel" ];
+  services.xserver.useGlamor = true;
+  
+ # OpenGL, with Intel integrated GPU:
+ hardware.opengl.enable = true;
+ hardware.opengl.extraPackages = with pkgs; [
+    vaapiIntel
+    vaapiVdpau
+    libvdpau-va-gl
+    intel-media-driver
+  ];
 
   # Power Management:
   services.thermald.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  
-  # Specifies graphics card setting, Intel here:
-  services.xserver.videoDrivers = [ "intel" ];
-  services.xserver.useGlamor = true;
 
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-ter>
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.epiphany pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
+  services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
+  [org.gnome.desktop.peripherals.touchpad]
+  click-method='default'
+''; # Mousepad right-click action works
 
   # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
@@ -85,15 +104,6 @@ NUR =
 
   # Automatic system updates:
   system.autoUpgrade.enable = true;
-  
-  # OpenGL, with Intel integrated GPU:
-   hardware.opengl.enable = true;
-   hardware.opengl.extraPackages = with pkgs; [
-    vaapiIntel
-    vaapiVdpau
-    libvdpau-va-gl
-    intel-media-driver
-  ];
 
   # Enable CUPS to print documents:
    services.printing.enable = true;
@@ -125,12 +135,13 @@ NUR =
    HoldoffTimeoutSec=10
   '';
   
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+ # Define the user account here. Don't forget to set a password with 'useradd' & ‘passwd’.
   
    users.users.halcek = {
      isNormalUser = true;
       home = "/home/halcek";
-     extraGroups = [ "wheel" "audio" "video" "network" "networkmanager"]; # Enable ‘sudo’ for the use>
+      shell = pkgs.fish;
+      extraGroups = [ "wheel" "audio" "video" "network" "networkmanager"]; # Enable ‘sudo’ for the use>
    };
 
 # List packages installed in system profile. To search, run:
@@ -187,7 +198,6 @@ NUR =
      # Media
      cozy # Audio-books
      gnome-podcasts
-     pragha # A competent music player
      vlc # Media-files player
      easytag # Editing ID3 tags for musical files
      python38Packages.python-vlc
@@ -205,7 +215,8 @@ NUR =
       gnutar
       mate.engrampa # Archiver front-end
       kitty # GPU accelerated terminal emulator
-      zenith # System information
+      fish # The best interactive shell
+      zenith # CLI System information
       neofetch
       mesa # For 3D graphics (see beginning of spec.)
       driversi686Linux.mesa
@@ -218,11 +229,15 @@ NUR =
       gnome.gpaste
       libgnome-keyring
       qgnomeplatform
+      gnomeExtensions.night-theme-switcher # Switch to a dark theme at night
       gnomeExtensions.hide-top-bar
       gnomeExtensions.showtime-horizontal
       gnomeExtensions.new-mail-indicator
       cinnamon.xapps
    ];
+   
+   # Enable the fi shell:
+    programs.fish.enable = true;
    
    # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -246,6 +261,7 @@ NUR =
 
   # Enable Bluetooth:
    hardware.bluetooth.enable = true;
+   services.blueman.enable = true;
 
   # Enable auto-mouting of connected (USB/SDC) devices:
    services.devmon.enable = true;
@@ -259,7 +275,7 @@ NUR =
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
