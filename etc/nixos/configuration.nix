@@ -7,7 +7,7 @@ let
 nixos-unstable =
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-nur = 
+NUR = 
     fetchTarball 
       https://github.com/nix-community/NUR/archive/master.tar.gz;
  in
@@ -21,7 +21,7 @@ nur =
 
     packageOverrides = pkgs: {
     linuxPackages = pkgs.linuxPackages_zen; # Use the latest kernel
-    nur = import nur {
+    NUR = import NUR {
     nixos-unstable = import nixos-unstable {
     config = config.nixpkgs.config;
    };
@@ -31,6 +31,7 @@ nur =
   
 # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.blacklistedKernelModules= [ "nouveau" ]
   systemd.services.systemd-udev-settle.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -39,7 +40,6 @@ nur =
   # Networking:
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
-
    services.mullvad-vpn.enable = true;
    
    # Workaround for the no network after resume issue:
@@ -62,12 +62,16 @@ nur =
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
+  hardware.cpu.intel.updateMicrocode = true; # For Intel-only CPUs
+
+  # Power Management:
+  services.thermald.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   
   # Specifies graphics card setting, Intel here:
-  services.xserver.videoDrivers = [ "modesetting" ];
+  services.xserver.videoDrivers = [ "intel" ];
   services.xserver.useGlamor = true;
 
   # Enable the GNOME Desktop Environment:
@@ -163,7 +167,7 @@ nur =
      certbot # Renews fresh SSL certificates
      
    # Internet:
-     eolie # A less bloated web browser
+     firefox-wayland
      gnome-feeds # An RSS reader
      filezilla # For FTP and FTPS connections
      transmission-gtk # P2P file transfer
@@ -264,5 +268,4 @@ nur =
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
-
 }
