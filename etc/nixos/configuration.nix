@@ -1,7 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-# How to install unfree packages on user level: NIXPKGS_ALLOW_UNFREE=1 nix-env -iA nixos.
+# After adding the unstable channel, run: nixos-rebuild switch --upgrade
 
 { config, pkgs, ... }:
 let
@@ -108,10 +108,8 @@ NUR =
 
   # Enable CUPS to print documents:
    services.printing.enable = true;
+   programs.system-config-printer.enable = true;
 
-  # Allow "unfree" packages.
-   nixpkgs.config.allowUnfree = true;
-   
    # Font settings:
    fonts.fontconfig.enable = true;
    fonts.fontconfig.dpi=96; # font size in xterm console
@@ -147,8 +145,7 @@ NUR =
 
 # List packages installed in system profile. To search, run:
   # $ nix search wget
-    environment.systemPackages = with pkgs; [
-
+    environment.systemPackages = with pkgs; [ 
     # Editors and writig:
      emacs  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also insta>
      vnote  # For larger research documents
@@ -196,7 +193,7 @@ NUR =
      tootle # A client for the fediverse
      cawbird # For Twitter
      
-     # Media
+     # Media:
      cozy # Audio-books
      gnome-podcasts
      vlc # Media-files player
@@ -208,38 +205,41 @@ NUR =
      sublime-music # A subsonic client
      reaper # An affordable DAW editor
      
-     # System
-      git
-      wget
-      unzip
-      unrar
-      gnutar
-      mate.engrampa # Archiver front-end
-      kitty # GPU accelerated terminal emulator
-      fish # The best interactive shell
-      zenith # CLI System information
-      neofetch
-      mesa # For 3D graphics (see beginning of spec.)
-      driversi686Linux.mesa
-      wpa_supplicant
-      usbutils
-      pciutils
-      webkitgtk
-      pantheon.elementary-calendar
-      gnome.mutter
-      gnome.gpaste
-      libgnome-keyring
-      qgnomeplatform
-      gnomeExtensions.night-theme-switcher # Switch to a dark theme at night
-      gnomeExtensions.hide-top-bar
-      gnomeExtensions.new-mail-indicator
-      cinnamon.xapps
+     # Graphics manipulation:
+     gimp     
+
+     # System:
+     git
+     wget
+     unzip
+     unrar
+     gnutar
+     mate.engrampa # Archiver front-end
+     kitty # GPU accelerated terminal emulator
+     fish # The best interactive shell
+     zenith # CLI System information
+     neofetch
+     mesa # For 3D graphics (see beginning of spec.)
+     driversi686Linux.mesa
+     wpa_supplicant
+     usbutils
+     pciutils
+     webkitgtk
+     pantheon.elementary-calendar
+     gnome.mutter
+     libgnome-keyring
+     qgnomeplatform
+     gnomeExtensions.hide-top-bar
+     gnomeExtensions.new-mail-indicator
+     cinnamon.xapps
    ];
    
    # Enable the fi shell:
     programs.fish.enable = true;
    
-   # Some programs need SUID wrappers, can be configured further or are
+ nixpkgs.config.allowUnfree = true; # Unfree for pre-created users    
+
+  # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
     programs.gnupg.agent = {
