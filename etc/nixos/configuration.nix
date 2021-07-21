@@ -33,6 +33,7 @@ NUR =
  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
@@ -93,7 +94,7 @@ NUR =
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.epiphany pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.epiphany pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
   services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
   [org.gnome.desktop.peripherals.touchpad]
   click-method='default'
@@ -167,7 +168,8 @@ NUR =
      
      # VPNs and Firewall:
      openvpn
-     mullvad-vpn
+     mullvad-vpn # A MullvadVPN client
+     protonvpn-gui # Client for ProtonVPN
      pptp
      openssl
      libressl
@@ -197,7 +199,6 @@ NUR =
      cozy # Audio-books
      gnome-podcasts
      vlc # Media-files player
-     easytag # Editing ID3 tags for musical files
      python38Packages.python-vlc
      python39Packages.python-vlc
      celluloid # Front-end for MPV
