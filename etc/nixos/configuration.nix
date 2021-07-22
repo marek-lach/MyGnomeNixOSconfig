@@ -1,16 +1,18 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-# After adding the unstable channel, run: nixos-rebuild switch --upgrade
+# After adding the unstable channel in $HOME/.nix-channels, run: nixos-rebuild switch --upgrade
 
 { config, pkgs, ... }:
+
 let
 nixos-unstable =
-    fetchTarball
+      fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
 NUR = 
-    fetchTarball 
-      https://github.com/nix-community/NUR/archive/master.tar.gz;
+  fetchTarball 
+    https://github.com/nix-community/NUR/archive/master.tar.gz;
+
  in
 {
   imports =
@@ -18,14 +20,18 @@ NUR =
       ./hardware-configuration.nix
     ];
 
+   # Import all the repositories: 
+
     nixpkgs.config = {
 
     packageOverrides = pkgs: {
-    linuxPackages = pkgs.linuxPackages_xanmod; # Use the latest kernel
+    linuxPackages = pkgs.linuxPackages_5_13; # Use the latest kernel
+    
     NUR = import NUR {
     nixos-unstable = import nixos-unstable {
+    
     config = config.nixpkgs.config;
-   };
+     };
     };
    };
   };
@@ -33,7 +39,7 @@ NUR =
  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.efi.efiSysMountPoint = "/boot/";
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
@@ -78,8 +84,10 @@ NUR =
   services.xserver.useGlamor = true;
   
  # OpenGL, with Intel integrated GPU:
- hardware.opengl.enable = true;
- hardware.opengl.extraPackages = with pkgs; [
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+  hardware.opengl.extraPackages = with pkgs; [
     vaapiIntel
     vaapiVdpau
     libvdpau-va-gl
@@ -95,7 +103,7 @@ NUR =
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.epiphany pkgs.evince pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.epiphany pkgs.evince pkgs.gnome.gnome-characters pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
   services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
   [org.gnome.desktop.peripherals.touchpad]
   click-method='default'
@@ -109,12 +117,15 @@ NUR =
   system.autoUpgrade.enable = true;
 
   # Enable CUPS to print documents:
-   services.printing.enable = true;
-   programs.system-config-printer.enable = true;
+ #  services.printing.enable = true;
+ #  programs.system-config-printer.enable = true;
 
    # Font settings:
    fonts.fontconfig.enable = true;
    fonts.fontconfig.dpi=96; # font size in xterm console
+   fonts.fonts = with pkgs; [
+	  pkgs.font-awesome
+  ];
    fonts = {
     fontDir = {
       enable = true;
@@ -125,6 +136,7 @@ NUR =
 # Enable sound:
    sound.enable = true;
    hardware.pulseaudio.enable = true;
+   nixpkgs.config.pulseaudio = true;
    hardware.pulseaudio.support32Bit = true;
    hardware.pulseaudio.package = pkgs.pulseaudioFull;
    hardware.pulseaudio.zeroconf.discovery.enable = true;
@@ -149,7 +161,8 @@ NUR =
   # $ nix search wget
     environment.systemPackages = with pkgs; [ 
     # Editors and writig:
-     emacs  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also insta>
+     emacs  # The Nano editor is also installed by default
+     auctex # Emacs mode for writing LaTex
      vnote  # For larger research documents
      trilium-desktop # Hierarchically linked notes
      zim # A personal knowledge base
@@ -273,7 +286,7 @@ NUR =
   # Enable automatic updatedb:
    services.locate.enable = true;
    
-   # Open ports in the firewall.
+  # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
