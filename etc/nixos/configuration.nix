@@ -42,6 +42,9 @@ NUR =
   boot.extraModulePackages = with config.boot.kernelPackages; [ wireguard ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernel.sysctl = {
+    "vm.swappiness" = lib.mkDefault 1;
+  }; # For SSDs
   
   boot.extraModprobeConfig = lib.mkDefault ''
     options i915 enable_fbc=1 enable_rc6=1 modeset=1
