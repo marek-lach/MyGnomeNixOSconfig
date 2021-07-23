@@ -335,7 +335,7 @@ NUR =
     networking.firewall.allowedTCPPorts = [ 53 80 88 442 433 443 444 445 514 554 5060 5228 5353 5357 8384 8443 31416 4419999 64738 ];
     networking.firewall.allowedUDPPorts = [ 53 88 8443 ];
   # Enable the firewall service itself:
-  networking.firewall.enable = true;
+    networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
