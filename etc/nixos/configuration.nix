@@ -135,6 +135,8 @@ NUR =
   powerManagement.enable = true;
   services.thermald.enable = true;
   services.upower.enable = true;
+  services.tlp.enable = lib.mkDefault ((lib.versionOlder (lib.versions.majorMinor lib.version) "21.05")
+                                       || !config.services.power-profiles-daemon.enable);
   services.acpid.enable = true;
 
   # Enable the X11 windowing system.
