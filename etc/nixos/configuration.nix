@@ -292,10 +292,11 @@ NUR =
      wpa_supplicant
      usbutils
      pciutils
+     iptsd # Intel Precise Touch & Stylus
      webkitgtk
-     gnome.mutter
+     gnome.mutter # The Gnome Window Manager
      libgnome-keyring
-     qgnomeplatform
+     qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
      gnomeExtensions.new-mail-indicator
      cinnamon.xapps
@@ -338,7 +339,14 @@ NUR =
    services.locate.enable = true;
    
   # Gnome Virtual File System - pretty essential I/O service, many apps need it for stuff like trash
-   services.gvfs.enable = true;
+   services.gvfs.enable = true; 
+ 
+ # Intel precise touch & stylus:
+   systemd.services.iptsd = {
+    description = "IPTSD";
+    script = "${pkgs.iptsd}/bin/iptsd";
+    wantedBy = [ "multi-user.target" ];
+  };
    
   # Open ports in the firewall:
   networking.firewall.allowedTCPPorts = [ 53 80 88 442 433 443 444 445 514 554 5060 5228 5353 5357 8384 8443 31416 4419999 64738 ];
