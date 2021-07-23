@@ -70,8 +70,8 @@ NUR =
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
+  # Per-interface useDHCP will be mandatory in the future, so this config replicates the default behaviour.
+  networking.enableIPv6 = true;
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
   networking.interfaces.wlp2s0.useDHCP = true;
