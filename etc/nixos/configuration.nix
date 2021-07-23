@@ -112,7 +112,10 @@ NUR =
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
 
   # Power Management:
+  powerManagement.enable = true;
   services.thermald.enable = true;
+  services.upower.enable = true;
+  services.acpid.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -120,7 +123,7 @@ NUR =
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.epiphany pkgs.evince pkgs.gnome.gnome-characters pkgs.gnome.gnome-calendar pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome.gedit pkgs.epiphany pkgs.evince pkgs.gnome.gnome-characters pkgs.file-roller pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
   services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
   [org.gnome.desktop.peripherals.touchpad]
   click-method='default'
@@ -134,8 +137,19 @@ NUR =
   system.autoUpgrade.enable = true;
 
   # Enable CUPS to print documents:
- #  services.printing.enable = true;
- #  programs.system-config-printer.enable = true;
+    services.printing.enable = true;
+    programs.system-config-printer.enable = true;
+    drivers = with pkgs; [
+      gutenprint
+      gutenprintBin
+      cups-googlecloudprint
+    ];
+    
+  # Cups network printing
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+  };
 
    # Font settings:
    fonts.fontconfig.enable = true;
@@ -261,7 +275,6 @@ NUR =
      usbutils
      pciutils
      webkitgtk
-     pantheon.elementary-calendar
      gnome.mutter
      libgnome-keyring
      qgnomeplatform
@@ -270,14 +283,13 @@ NUR =
      cinnamon.xapps
    ];
    
-   # Enable the fi shell:
+   # Enable the friendly inter shell:
     programs.fish.enable = true;
    
  nixpkgs.config.allowUnfree = true; # Unfree for pre-created users    
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
+  # Some programs need SUID wrappers, can be configured further or are started in user sessions.
+    programs.mtr.enable = true;
     programs.gnupg.agent = {
     enable = true; 
     enableSSHSupport = true; 
