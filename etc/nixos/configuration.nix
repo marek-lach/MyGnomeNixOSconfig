@@ -39,7 +39,10 @@ NUR =
   };
   
  # Load extra kernel modules:
+  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ wireguard ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" "asus_wmi" "hid_asus" "nouveau" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
   
  # Blacklist troublesome kernel modules:
   boot.blacklistedKernelModules = mkOption {
@@ -66,6 +69,12 @@ NUR =
   # Networking:
    networking.hostName = "halcek"; # Define your hostname.
    networking.networkmanager.enable = true; # Sets-up the wireless network
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  networking.useDHCP = false;
+  networking.interfaces.enp3s0.useDHCP = true;
+  networking.interfaces.wlp2s0.useDHCP = true;
    services.mullvad-vpn.enable = true;
    
    # Workaround for the no network after resume issue:
