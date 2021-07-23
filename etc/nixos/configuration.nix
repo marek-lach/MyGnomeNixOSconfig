@@ -36,6 +36,9 @@ NUR =
    };
   };
   
+ # Load extra kernel modules:
+  boot.extraModulePackages = with config.boot.kernelPackages; [ wireguard ];
+  
  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
