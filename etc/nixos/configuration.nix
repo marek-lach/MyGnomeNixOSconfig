@@ -39,6 +39,16 @@ NUR =
  # Load extra kernel modules:
   boot.extraModulePackages = with config.boot.kernelPackages; [ wireguard ];
   
+ # Blacklist troublesome kernel modules:
+  boot.blacklistedKernelModules = mkOption {
+      type = types.listOf types.str;
+      default = [ "nouveau" ];
+      description = ''
+        List of names of kernel modules that should not be loaded
+        automatically by the hardware probing code.
+      '';
+    };
+  
  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
@@ -96,6 +106,8 @@ NUR =
     libvdpau-va-gl
     intel-media-driver
   ];
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
 
   # Power Management:
   services.thermald.enable = true;
