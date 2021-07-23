@@ -75,6 +75,7 @@ NUR =
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
   networking.interfaces.wlp2s0.useDHCP = true;
+  networking.interfaces.mlan0.useDHCP = true;
    services.mullvad-vpn.enable = true;
    
    # Workaround for the no network after resume issue:
