@@ -38,8 +38,8 @@ NUR =
   };
   
  # Load extra kernel modules:
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ wireguard ];
+  boot.kernelModules = [ "acpi_call" "kvm-intel" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call wireguard ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernel.sysctl = {
