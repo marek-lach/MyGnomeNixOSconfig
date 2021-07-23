@@ -5,6 +5,8 @@
 
 { config, pkgs, ... }:
 
+with lib;
+
 let
 nixos-unstable =
       fetchTarball
@@ -155,6 +157,10 @@ NUR =
    hardware.pulseaudio.support32Bit = true;
    hardware.pulseaudio.package = pkgs.pulseaudioFull;
    hardware.pulseaudio.zeroconf.discovery.enable = true;
+   hardware.pulseaudio.extraConfig = ''
+    load-module module-equalizer-sink
+    load-module module-dbus-protocol
+  '';
    
  # Required for screen-lock-on-suspend functionality.
    services.logind.extraConfig = ''
@@ -300,6 +306,9 @@ NUR =
    
   # Enable automatic updatedb:
    services.locate.enable = true;
+   
+  # Gnome Virtual File System - pretty essential I/O service, many apps need it for stuff like trash
+   services.gvfs.enable = true;
    
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
