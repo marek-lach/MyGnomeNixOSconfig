@@ -27,7 +27,6 @@ NUR =
     nixpkgs.config = {
     packageOverrides = pkgs: {
     linuxPackages = pkgs.linuxPackages_5_13; # Use the latest kernel
-    linuxPackages = pkgs.fwts-efi-runtime; # EFI firmware testing
     NUR = import NUR {
     nixos-unstable = import nixos-unstable {
     
@@ -42,6 +41,7 @@ NUR =
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.extraKernelParams = [ "pci=realloc"  "video=efifb:off" ]
   
  # Use the systemd-boot EFI boot loader.
   boot.kernelPackages = pkgs.linuxPackages_5_13; # Boot the kernel first
@@ -105,8 +105,6 @@ NUR =
     libvdpau-va-gl
     intel-media-driver
   ];
-  nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
 
   # Power Management:
   powerManagement.enable = true;
