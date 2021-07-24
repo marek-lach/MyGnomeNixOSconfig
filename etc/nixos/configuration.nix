@@ -205,6 +205,7 @@ nixpkgsSrc = nixpkgs; # urgh
    hardware.pulseaudio.extraConfig = ''
     load-module module-equalizer-sink
     load-module module-dbus-protocol
+    load-module module-switch-on-connect # Switch automatically when Bluetooth connects
   '';
    
  # Required for screen-lock-on-suspend functionality.
