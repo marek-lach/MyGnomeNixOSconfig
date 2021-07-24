@@ -14,12 +14,6 @@ nixos-unstable =
 NUR = 
   fetchTarball 
     https://github.com/nix-community/NUR/archive/master.tar.gz;
-
-nixpkgsSrc = nixpkgs; # urgh
-
-  pkgs = import ./.. { system = "x86_64-linux"; };
-
-  lib = pkgs.lib;
   
  in
 {
@@ -45,30 +39,9 @@ nixpkgsSrc = nixpkgs; # urgh
   
  # Load extra kernel modules:
   boot.kernelModules = [ "acpi_call" "kvm-intel" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call wireguard ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.kernel.sysctl = {
-    "vm.swappiness" = lib.mkDefault 1;
-  }; # For SSDs
-  
-  boot.extraModprobeConfig = lib.mkDefault ''
-    options i915 enable_fbc=1 enable_rc6=1 modeset=1
-    options snd_hda_intel power_save=1
-    options snd_ac97_codec power_save=1
-    options iwlwifi power_save=Y
-    options iwldvm force_cam=N
-  '';
-  
- # Blacklist troublesome kernel modules:
-  boot.blacklistedKernelModules = mkOption {
-      type = types.listOf types.str;
-      default = [ "nouveau" ];
-      description = ''
-        List of names of kernel modules that should not be loaded
-        automatically by the hardware probing code.
-      '';
-    };
   
  # Use the systemd-boot EFI boot loader.
   boot.kernelPackages = pkgs.linuxPackages_5_13; # Boot the kernel first
@@ -89,10 +62,6 @@ nixpkgsSrc = nixpkgs; # urgh
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this config replicates the default behaviour.
   networking.enableIPv6 = true;
-  networking.useDHCP = false;
-  networking.interfaces.enp3s0.useDHCP = true;
-  networking.interfaces.wlp2s0.useDHCP = true;
-  networking.interfaces.mlan0.useDHCP = true;
    services.mullvad-vpn.enable = true;
    
    # Workaround for the no network after resume issue:
@@ -122,7 +91,7 @@ nixpkgsSrc = nixpkgs; # urgh
   services.fwupd.enable = true;
   hardware.cpu.intel.updateMicrocode = true; # For Intel-only CPUs
    
-  # Specifies graphics card setting, Intel here:
+ # Specifies graphics card setting, Intel here:
   services.xserver.videoDrivers = [ "intel" ];
   services.xserver.useGlamor = true;
   
@@ -143,8 +112,6 @@ nixpkgsSrc = nixpkgs; # urgh
   powerManagement.enable = true;
   services.thermald.enable = true;
   services.upower.enable = true;
-  services.tlp.enable = lib.mkDefault ((lib.versionOlder (lib.versions.majorMinor lib.version) "21.05")
-                                       || !config.services.power-profiles-daemon.enable);
   services.acpid.enable = true;
 
   # Enable the X11 windowing system.
@@ -153,7 +120,7 @@ nixpkgsSrc = nixpkgs; # urgh
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome-multi-writer pkgs.gnome.gedit pkgs.epiphany pkgs.evince pkgs.gnome.gnome-characters pkgs.file-roller pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
+  environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome-multi-writer pkgs.gnome.gedit pkgs.epiphany pkgs.evince pkgs.gnome.gnome-characters pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
   services.gnome.evolution-data-server.enable = true;
   services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
   [org.gnome.desktop.peripherals.touchpad]
@@ -166,21 +133,6 @@ nixpkgsSrc = nixpkgs; # urgh
 
   # Automatic system updates:
   system.autoUpgrade.enable = true;
-
-  # Enable CUPS to print documents:
-    services.printing.enable = true;
-    programs.system-config-printer.enable = true;
-    drivers = with pkgs; [
-      gutenprint
-      gutenprintBin
-      cups-googlecloudprint
-    ];
-    
-  # Cups network printing
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-  };
 
    # Font settings:
    fonts.fontconfig.enable = true;
@@ -312,6 +264,7 @@ nixpkgsSrc = nixpkgs; # urgh
      vulkan-headers
      vulkan-loader # Load Vulkan globally
      firmwareLinuxNonfree # Linux firmware
+     uefi-firmware-parser
      libgnome-keyring
      qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
@@ -356,14 +309,7 @@ nixpkgsSrc = nixpkgs; # urgh
    services.locate.enable = true;
    
   # Gnome Virtual File System - pretty essential I/O service, many apps need it for stuff like trash
-   services.gvfs.enable = true; 
- 
- # Intel precise touch & stylus:
-   systemd.services.iptsd = {
-    description = "IPTSD";
-    script = "${pkgs.iptsd}/bin/iptsd";
-    wantedBy = [ "multi-user.target" ];
-  };
+   services.gvfs.enable = true;
    
   # Open ports in the firewall:
   networking.firewall.allowedTCPPorts = [ 53 80 88 442 433 443 444 445 514 554 5060 5228 5353 5357 8384 8443 31416 4419999 64738 ];
