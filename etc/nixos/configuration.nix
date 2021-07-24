@@ -91,6 +91,7 @@ NUR =
    # Workaround for the no network after resume issue:
     powerManagement.resumeCommands = ''
     ${pkgs.systemd}/bin/systemctl restart networkmanager
+    ${pkgs.systemd}/bin/systemctl restart wpa_supplicant
   '';
 
    # Security:
