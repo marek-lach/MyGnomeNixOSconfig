@@ -41,7 +41,8 @@ NUR =
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.extraKernelParams = [ "pci=realloc"  "video=efifb:off" ]
+  boot.extraKernelParams = [ "pci=realloc"  "video=efifb:off" ];
+  boot.initrd.checkJournalingFS = false;
   
  # Use the systemd-boot EFI boot loader.
   boot.kernelPackages = pkgs.linuxPackages_5_13; # Boot the kernel first
@@ -50,7 +51,7 @@ NUR =
   boot.loader.efi.efiSysMountPoint = "/boot/";
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "btrfs" ];
+  boot.supportedFilesystems = [ "f2fs" ];
 
   # Better SSD support:
    services.fstrim.enable = true; # Enable TRIM
