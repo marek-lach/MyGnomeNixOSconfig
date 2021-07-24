@@ -5,8 +5,6 @@
 
 { config, pkgs, ... }:
 
-with lib;
-
 let
 nixos-unstable =
       fetchTarball
