@@ -33,7 +33,7 @@ nixpkgsSrc = nixpkgs; # urgh
     nixpkgs.config = {
     packageOverrides = pkgs: {
     linuxPackages = pkgs.linuxPackages_5_13; # Use the latest kernel
-    
+    linuxPackages = pkgs.fwts-efi-runtime; # EFI firmware testing
     NUR = import NUR {
     nixos-unstable = import nixos-unstable {
     
@@ -71,6 +71,7 @@ nixpkgsSrc = nixpkgs; # urgh
     };
   
  # Use the systemd-boot EFI boot loader.
+  boot.kernelPackages = pkgs.linuxPackages_5_13; # Boot the kernel first
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
   boot.loader.efi.efiSysMountPoint = "/boot/";
@@ -309,6 +310,7 @@ nixpkgsSrc = nixpkgs; # urgh
      gnome.mutter # The Gnome Window Manager
      vulkan-headers
      vulkan-loader # Load Vulkan globally
+     firmwareLinuxNonfree # Linux firmware
      libgnome-keyring
      qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
