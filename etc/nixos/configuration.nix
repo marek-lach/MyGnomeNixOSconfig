@@ -300,6 +300,8 @@ NUR =
      iptsd # Intel Precise Touch & Stylus
      webkitgtk
      gnome.mutter # The Gnome Window Manager
+     vulkan-headers
+     vulkan-loader # Load Vulkan globally
      libgnome-keyring
      qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
