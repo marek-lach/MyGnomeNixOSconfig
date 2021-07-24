@@ -15,6 +15,12 @@ NUR =
   fetchTarball 
     https://github.com/nix-community/NUR/archive/master.tar.gz;
 
+nixpkgsSrc = nixpkgs; # urgh
+
+  pkgs = import ./.. { system = "x86_64-linux"; };
+
+  lib = pkgs.lib;
+  
  in
 {
   imports =
