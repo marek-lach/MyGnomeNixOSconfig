@@ -52,6 +52,7 @@ NUR =
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" "zfs" "ext4" ];
+  boot.initrd.network.enable = true; # Enable network at boot
 
   # Better SSD support:
    services.fstrim.enable = true; # Enable TRIM
