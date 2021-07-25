@@ -127,14 +127,18 @@ NUR =
   # Configure keymap in X11:
    services.xserver.layout = "us,gb,sk";
    services.xserver.xkbOptions = "eurosign:e";
+   
+  # Enable CUPS to print documents:
+   services.printing.enable = true;
+   programs.system-config-printer.enable = true; 
 
   # Automatic system updates:
   system.autoUpgrade.enable = true;
 
-   # Font settings:
-   fonts.fontconfig.enable = true;
-   fonts.fontconfig.dpi=96; # font size in xterm console
-   fonts.fonts = with pkgs; [
+  # Font settings:
+  fonts.fontconfig.enable = true;
+  fonts.fontconfig.dpi=96; # font size in xterm console
+  fonts.fonts = with pkgs; [
 	  pkgs.font-awesome
   ];
    fonts = {
