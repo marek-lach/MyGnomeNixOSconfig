@@ -36,7 +36,7 @@ NUR =
   
  # Load extra kernel modules:
   boot.kernelModules = [ "acpi_call" "kvm-intel" "video=efifb:off" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call video=efifb:off ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "video=efifb:off" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.extraModprobeConfig = ''
@@ -51,7 +51,7 @@ NUR =
   boot.loader.efi.efiSysMountPoint = "/boot/";
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "btrfs" "zfs" "ext4" ];
+  boot.supportedFilesystems = [ "btrfs" "ext4" ];
   boot.initrd.network.enable = true; # Enable network at boot
 
   # Better SSD support:
