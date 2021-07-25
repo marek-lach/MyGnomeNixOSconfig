@@ -49,7 +49,7 @@ NUR =
   boot.loader.efi.efiSysMountPoint = "/boot/";
   systemd.services.NetworkManager-wait-online.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "f2fs" ];
+  boot.supportedFilesystems = [ "btrfs" "zfs" "ext4" ];
 
   # Better SSD support:
    services.fstrim.enable = true; # Enable TRIM
@@ -315,7 +315,7 @@ NUR =
    
   # Open ports in the firewall:
   # networking.firewall.allowedTCPPorts = [ 53 80 88 442 433 443 444 445 514 554 5060 5228 5353 5357 8384 8443 31416 4419999 64738 ];
-  # networking.firewall.allowedUDPPorts = [ 53 88 8443 ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
   # Disable the firewall service itself:
     networking.firewall.enable = false;
 
