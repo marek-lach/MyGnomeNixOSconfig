@@ -35,12 +35,14 @@ NUR =
   };
   
  # Load extra kernel modules:
-  boot.kernelModules = [ "acpi_call" "kvm-intel" ];
+  boot.kernelModules = [ "acpi_call" "kvm-intel" "video=efifb:off" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "video=efifb:off" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.extraKernelParams = [ "pci=realloc"  "video=efifb:off" ];
-  boot.initrd.checkJournalingFS = false;
+  boot.extraModprobeConfig = ''
+  options video=efifb:off pci=realloc
+'';
+  boot.initrd.checkJournalingFS = true;
   
  # Use the systemd-boot EFI boot loader.
   boot.kernelPackages = pkgs.linuxPackages_5_13; # Boot the kernel first
@@ -259,7 +261,6 @@ NUR =
      wpa_supplicant
      usbutils
      pciutils
-     iptsd # Intel Precise Touch & Stylus
      webkitgtk
      gnome.mutter # The Gnome Window Manager
      vulkan-headers
