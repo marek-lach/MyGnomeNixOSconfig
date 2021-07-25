@@ -262,6 +262,7 @@ NUR =
      vulkan-loader # Load Vulkan globally
      firmwareLinuxNonfree # Linux firmware
      uefi-firmware-parser
+     systemd-wait
      libgnome-keyring
      qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
