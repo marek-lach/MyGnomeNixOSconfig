@@ -24,7 +24,7 @@ NUR =
 
     nixpkgs.config = {
     packageOverrides = pkgs: {
-    linuxPackages = pkgs.linuxPackages_5_13; # Use the latest kernel
+    linuxPackages = pkgs.linuxPackages_4_19; # Use the latest kernel
     NUR = import NUR {
     nixos-unstable = import nixos-unstable {
     
@@ -35,17 +35,18 @@ NUR =
   };
   
  # Load extra kernel modules:
-  boot.kernelModules = [ "acpi_call" "kvm-intel" "video=efifb:off" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call video=efifb:off ];
-  boot.initrd.availableKernelModules = [ "xhci_pci" "video=efifb:off" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.kernelModules = [ "acpi_call" "kvm-intel" "pci=realloc" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.extraModprobeConfig = ''
-  options video=efifb:off pci=realloc
+  options snd_hda_intel power_save=1 iwlwifi power_save=Y pci=realloc
 '';
-  boot.initrd.checkJournalingFS = true;
+  boot.initrd.checkJournalingFS = true; # Check-up on the file system
   
  # Use the systemd-boot EFI boot loader.
-  boot.kernelPackages = pkgs.linuxPackages_5_13; # Boot the kernel first
+  boot.kernelPackages = pkgs.linuxPackages_4_19; # Boot the kernel first
+  hardware.firmware = [ pkgs.alsa-firmware ]; # Initialize ALSA firmware
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
   boot.loader.efi.efiSysMountPoint = "/boot/";
@@ -59,17 +60,16 @@ NUR =
    fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];   
 
   # Networking:
-   networking.hostName = "halcek"; # Define your hostname.
-   networking.networkmanager.enable = true; # Sets-up the wireless network
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this config replicates the default behaviour.
+  networking.hostName = "halcek"; # Define your hostname.
+  networking.networkmanager.enable = true; # Sets-up the wireless network
   networking.enableIPv6 = true;
-   services.mullvad-vpn.enable = true;
+  networking.interfaces.wlp1s0.useDHCP = true;
+  services.mullvad-vpn.enable = true;
    
-   # Workaround for the no network after resume issue:
-    powerManagement.resumeCommands = ''
-    ${pkgs.systemd}/bin/systemctl restart networkmanager
-    ${pkgs.systemd}/bin/systemctl restart wpa_supplicant
+  # Workaround for the no network after resume issue:
+   powerManagement.resumeCommands = ''
+   ${pkgs.systemd}/bin/systemctl restart networkmanager
+   ${pkgs.systemd}/bin/systemctl restart wpa_supplicant
   '';
 
    # Security:
@@ -113,9 +113,11 @@ NUR =
   services.thermald.enable = true;
   services.upower.enable = true;
   services.acpid.enable = true;
-
+  services.power-profiles-daemon.enable = false;
+  services.tlp.enable = true;
+ 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services.xserver.enable = true;  
 
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
@@ -131,9 +133,12 @@ NUR =
    services.xserver.layout = "us,gb,sk";
    services.xserver.xkbOptions = "eurosign:e";
    
-  # Enable CUPS to print documents:
-   services.printing.enable = true;
-   programs.system-config-printer.enable = true; 
+  # Enable printing:
+  # Note that the CUPS Web UI for configuration can be accessed at: http://localhost:631
+  services.printing = {
+    enable = true;
+  };
+  programs.system-config-printer.enable = true;
 
   # Automatic system updates:
   system.autoUpgrade.enable = true;
@@ -143,6 +148,8 @@ NUR =
   fonts.fontconfig.dpi=96; # font size in xterm console
   fonts.fonts = with pkgs; [
 	  pkgs.font-awesome
+          pkgs.fira
+          pkgs.montserrat
   ];
    fonts = {
     fontDir = {
@@ -151,7 +158,7 @@ NUR =
     enableGhostscriptFonts = true;
     };
 
-# Enable sound:
+ # Enable sound:
    sound.enable = true;
    hardware.pulseaudio.enable = true;
    nixpkgs.config.pulseaudio = true;
@@ -163,21 +170,21 @@ NUR =
     load-module module-dbus-protocol
     load-module module-switch-on-connect # Switch automatically when Bluetooth connects
   '';
-   
- # Required for screen-lock-on-suspend functionality.
-   services.logind.extraConfig = ''
-   LidSwitchIgnoreInhibited=False
-   HandleLidSwitch=suspend
-   HoldoffTimeoutSec=10
-  '';
   
+ # Run periodic garbage collection of the Nix store cache:
+ nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
  # Define the user account here. Don't forget to set a password with 'useradd' & ‘passwd’.
   
    users.users.halcek = {
      isNormalUser = true;
       home = "/home/halcek";
       shell = pkgs.fish;
-      extraGroups = [ "wheel" "audio" "video" "network" "networkmanager"]; # Enable ‘sudo’ for the use>
+      extraGroups = [ "wheel" "audio" "jackaudio" "sound" "video" "network" "networkmanager" "input" ]; # Enable ‘sudo’ for the use>
    };
 
 # List packages installed in system profile. To search, run:
@@ -239,10 +246,12 @@ NUR =
      python38Packages.python-vlc
      python39Packages.python-vlc
      celluloid # Front-end for MPV
+     flacon # Divide an audio file into songs
      youtube-dl # An internet video downloader
      sublime-music # A subsonic client
      reaper # An affordable DAW editor
-     
+     pavucontrol # PulseAudio user control     
+
      # Graphics manipulation:
      gimp     
 
