@@ -194,7 +194,8 @@ NUR =
 
 # List packages installed in system profile. To search, run:
   # $ nix search wget
-    environment.systemPackages = with pkgs; [ 
+    environment.systemPackages = with pkgs; [
+    
     # Editors and writig:
      pkgs.emacs  # The Nano editor is also installed by default
      auctex # Emacs mode for writing LaTex
@@ -206,6 +207,7 @@ NUR =
      pkgs.obsidian # Note connections
      pandoc # A universal document converter
      ghostscript
+     tectonic # The LaTex typesetting, and rendering engine
      gnome.gspell # Spell-checking capabilities for GNOME
      pkgs.xed-editor # A less basic, basic text editor 
      pkgs.libreoffice-fresh
