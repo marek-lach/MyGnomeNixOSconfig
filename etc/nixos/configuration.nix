@@ -64,6 +64,9 @@ NUR =
    services.fstrim.enable = true; # Enable TRIM
    fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];   
 
+  # Improve memory process management:
+   services.earlyoom.enable = true;
+ 
   # Networking:
   networking.hostName = "halcek"; # Define your hostname.
   networking.networkmanager.enable = true; # Sets-up the wireless network
