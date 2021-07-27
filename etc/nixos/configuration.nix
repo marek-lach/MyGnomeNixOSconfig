@@ -205,9 +205,10 @@ NUR =
      pkgs.trilium-desktop # Hierarchically linked notes
      pkgs.zim # A personal knowledge base
      pkgs.obsidian # Note connections
-     pandoc # A universal document converter
-     ghostscript
+     pkgs.pandoc # A universal document converter
+     pkgs.ghostscript
      tectonic # The LaTex typesetting, and rendering engine
+     setzer # A LaTex editor, written using GTK toolkit
      gnome.gspell # Spell-checking capabilities for GNOME
      pkgs.xed-editor # A less basic, basic text editor 
      pkgs.libreoffice-fresh
