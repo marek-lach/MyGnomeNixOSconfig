@@ -196,20 +196,20 @@ NUR =
   # $ nix search wget
     environment.systemPackages = with pkgs; [ 
     # Editors and writig:
-     emacs  # The Nano editor is also installed by default
+     pkgs.emacs  # The Nano editor is also installed by default
      auctex # Emacs mode for writing LaTex
-     apostrophe # Distraction-free markdown editor
-     zettlr # A markdown document processor
-     vnote  # For larger research documents
-     trilium-desktop # Hierarchically linked notes
-     zim # A personal knowledge base
-     obsidian # Note connections
+     pkgs.apostrophe # Distraction-free markdown editor
+     pkgs.zettlr # A markdown document processor
+     pkgs.vnote  # For larger research documents
+     pkgs.trilium-desktop # Hierarchically linked notes
+     pkgs.zim # A personal knowledge base
+     pkgs.obsidian # Note connections
      pandoc # A universal document converter
      ghostscript
      gnome.gspell # Spell-checking capabilities for GNOME
-     xed-editor # A less basic, basic text editor 
-     libreoffice-fresh
-     koreader # An ebook, and PDF reader
+     pkgs.xed-editor # A less basic, basic text editor 
+     pkgs.libreoffice-fresh
+     pkgs.koreader # An ebook, and PDF reader
      
    # Spell-checkers:
      aspellDicts.en
@@ -218,9 +218,9 @@ NUR =
      hunspellDicts.sk-sk
      
      # VPNs and Firewall:
-     openvpn
-     mullvad-vpn # A MullvadVPN client
-     protonvpn-gui # Client for ProtonVPN
+     pkgs.openvpn
+     pkgs.mullvad-vpn # A MullvadVPN client
+     pkgs.protonvpn-gui # Client for ProtonVPN
      pptp
      openssl
      libressl
@@ -229,38 +229,38 @@ NUR =
      certbot # Renews fresh SSL certificates
      
    # Internet:
-     firefox-wayland
-     gnome-feeds # An RSS reader
-     filezilla # For FTP and FTPS connections
-     transmission-gtk # P2P file transfer
+     pkgs.firefox-wayland
+     pkgs.gnome-feeds # An RSS reader
+     pkgs.filezilla # For FTP and FTPS connections
+     pkgs.transmission-gtk # P2P file transfer
      croc # Computer-to-computer file transfer
      
    # Communication:
-     mirage-im # A Matrix.org client
-     signal-desktop
-     teams
-     zoom-us # A necessary evil
-     skype
-     dino # A XMPP client
-     gnome.polari # An IRC client
-     tootle # A client for the fediverse
-     cawbird # For Twitter
+     pkgs.mirage-im # A Matrix.org client
+     pkgs.signal-desktop
+     pkgs.teams
+     pkgs.zoom-us # A necessary evil
+     pkgs.skype
+     pkgs.dino # A XMPP client
+     pkgs.gnome.polari # An IRC client
+     pkgs.tootle # A client for the fediverse
+     pkgs.cawbird # For Twitter
      
      # Media:
-     cozy # Audio-books
-     gnome-podcasts
-     vlc # Media-files player
+     pkgs.cozy # Audio-books
+     pkgs.gnome-podcasts
+     pkgs.vlc # Media-files player
      python38Packages.python-vlc
      python39Packages.python-vlc
-     celluloid # Front-end for MPV
-     flacon # Divide an audio file into songs
+     pkgs.celluloid # Front-end for MPV
+     pkgs.flacon # Divide an audio file into songs
      youtube-dl # An internet video downloader
-     sublime-music # A subsonic client
+     pkgs.sublime-music # A subsonic client
      reaper # An affordable DAW editor
      pavucontrol # PulseAudio user control     
 
      # Graphics manipulation:
-     gimp     
+     pkgs.gimp    
 
      # System:
      git
@@ -269,7 +269,7 @@ NUR =
      unrar
      gnutar
      mate.engrampa # Archiver front-end
-     kitty # GPU accelerated terminal emulator
+     pkgs.kitty # GPU accelerated terminal emulator
      fish # The best interactive shell
      zenith # CLI System information
      neofetch
