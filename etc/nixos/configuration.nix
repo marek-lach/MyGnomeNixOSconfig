@@ -6,6 +6,11 @@
 { config, pkgs, ... }:
 
 let
+ ciSystems = [
+    "x86_64-linux"
+    "aarch64-linux"
+  ]; # Specifies architecture
+
 nixos-unstable =
       fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
