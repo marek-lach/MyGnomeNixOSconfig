@@ -198,13 +198,14 @@ NUR =
     # Editors and writig:
      emacs  # The Nano editor is also installed by default
      auctex # Emacs mode for writing LaTex
+     apostrophe # Distraction-free markdown editor
      vnote  # For larger research documents
      trilium-desktop # Hierarchically linked notes
      zim # A personal knowledge base
      obsidian # Note connections
      pandoc # A universal document converter
      ghostscript
-     gnome.gspell
+     gnome.gspell # Spell-checking capabilities for GNOME
      xed-editor # A less basic, basic text editor 
      libreoffice-fresh
      koreader # An ebook, and PDF reader
