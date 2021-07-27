@@ -24,7 +24,7 @@ NUR =
 
     nixpkgs.config = {
     packageOverrides = pkgs: {
-    linuxPackages = pkgs.linuxPackages_4_19; # Use the latest kernel
+    linuxPackages = pkgs.linuxPackages_testing_bcachefs; # Use the latest kernel
     NUR = import NUR {
     nixos-unstable = import nixos-unstable {
     
@@ -45,7 +45,7 @@ NUR =
   boot.initrd.checkJournalingFS = true; # Check-up on the file system
   
  # Use the systemd-boot EFI boot loader.
-  boot.kernelPackages = pkgs.linuxPackages_4_19; # Boot the kernel first
+  boot.kernelPackages = pkgs.linuxPackages_testing_bcachefs; # Boot the kernel first
   hardware.firmware = [ pkgs.alsa-firmware ]; # Initialize ALSA firmware
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
