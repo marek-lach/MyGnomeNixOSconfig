@@ -199,6 +199,7 @@ NUR =
      emacs  # The Nano editor is also installed by default
      auctex # Emacs mode for writing LaTex
      apostrophe # Distraction-free markdown editor
+     zettlr # A markdown document processor
      vnote  # For larger research documents
      trilium-desktop # Hierarchically linked notes
      zim # A personal knowledge base
