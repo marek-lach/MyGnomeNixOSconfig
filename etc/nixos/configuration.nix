@@ -73,6 +73,8 @@ NUR =
   networking.networkmanager.enable = true; # Sets-up the wireless network
   networking.enableIPv6 = true;
   networking.interfaces.wlp1s0.useDHCP = true;
+  networking.interfaces.wlp2s0.useDHCP = true;
+  networking.interfaces.wlp4s0.useDHCP = true;
   services.mullvad-vpn.enable = true;
    
   # Workaround for the no network after resume issue:
