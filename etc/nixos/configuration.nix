@@ -44,6 +44,7 @@ NUR =
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.loader.generationsDir.copyKernels = true; # Copy the necessary boot files into /boot
   boot.extraModprobeConfig = ''
   options snd_hda_intel power_save=1 iwlwifi power_save=N pci=realloc
 '';
