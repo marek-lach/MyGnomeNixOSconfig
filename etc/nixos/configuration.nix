@@ -259,6 +259,7 @@ NUR =
    # Internet:
      pkgs.firefox-wayland
      pkgs.gnome-feeds # An RSS reader
+     pkgs.lagrange # A Gemini client
      pkgs.filezilla # For FTP and FTPS connections
      pkgs.transmission-gtk # P2P file transfer
      pkgs.croc # Computer-to-computer file transfer
@@ -282,7 +283,7 @@ NUR =
      python39Packages.python-vlc
      pkgs.celluloid # Front-end for MPV
      pkgs.flacon # Divide an audio file into songs
-     youtube-dl # An internet video downloader
+     pkgs.youtube-dl # An internet video downloader
      pkgs.sublime-music # A subsonic client
      reaper # An affordable DAW editor
      pavucontrol # PulseAudio user control     
@@ -291,10 +292,10 @@ NUR =
      pkgs.gimp    
 
      # System:
-     git
-     wget
-     unzip
-     unrar
+     pkgs.git
+     pkgs.wget
+     pkgs.unzip
+     pkgs.unrar
      gnutar
      mate.engrampa # Archiver front-end
      pkgs.kitty # GPU accelerated terminal emulator
@@ -318,14 +319,13 @@ NUR =
      libgnome-keyring
      qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
-     gnomeExtensions.new-mail-indicator
      cinnamon.xapps
    ];
    
    # Enable the friendly interact shell:
     programs.fish.enable = true;
    
- nixpkgs.config.allowUnfree = true; # Unfree for pre-created users    
+    nixpkgs.config.allowUnfree = true; # Install even Unfree packages, for pre-created users    
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
     programs.mtr.enable = true;
