@@ -130,7 +130,8 @@ NUR =
 
   # Enable the GNOME Desktop Environment:
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome.enable = true; # Can be set to desktopManager.plasma5, if desired
+  services.xserver.displayManager.sddm.enable = false; # Normally used for the KDE Plasma desktp
   environment.gnome.excludePackages = [ pkgs.gnome.cheese pkgs.gnome-photos pkgs.gnome.gnome-music pkgs.gnome.gnome-terminal pkgs.gnome-multi-writer pkgs.gnome.gedit pkgs.epiphany pkgs.evince pkgs.gnome.gnome-characters pkgs.gnome.totem pkgs.gnome.tali pkgs.gnome.iagno pkgs.gnome.hitori pkgs.gnome.atomix pkgs.gnome-tour ];
   services.gnome.evolution-data-server.enable = true;
   services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
@@ -211,7 +212,7 @@ NUR =
      isNormalUser = true;
       home = "/home/halcek";
       shell = pkgs.fish;
-      extraGroups = [ "wheel" "audio" "jackaudio" "sound" "video" "network" "networkmanager" "input" ]; # Enable ‘sudo’ for the use>
+      extraGroups = [ "wheel" "sudo" "disk" "audio" "jackaudio" "sound" "video" "network" "networkmanager" "input" ];
    };
 
 # List packages installed in system profile. To search, run:
@@ -258,7 +259,7 @@ NUR =
      pkgs.gnome-feeds # An RSS reader
      pkgs.filezilla # For FTP and FTPS connections
      pkgs.transmission-gtk # P2P file transfer
-     croc # Computer-to-computer file transfer
+     pkgs.croc # Computer-to-computer file transfer
      
    # Communication:
      pkgs.mirage-im # A Matrix.org client
@@ -317,7 +318,7 @@ NUR =
      cinnamon.xapps
    ];
    
-   # Enable the friendly inter shell:
+   # Enable the friendly interact shell:
     programs.fish.enable = true;
    
  nixpkgs.config.allowUnfree = true; # Unfree for pre-created users    
@@ -339,6 +340,7 @@ NUR =
    
   # Enable touchpad support:
    services.xserver.libinput.enable = true;
+   services.xserver.synaptics.twoFingerScroll = true;
    services.gpm.enable = true; # Generic mouse support
 
   # Enable Bluetooth:
