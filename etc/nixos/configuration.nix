@@ -25,11 +25,10 @@ NUR =
       ./hardware-configuration.nix
     ];
 
-   # Import all the repositories: 
-
+   # Import all the repositories:
     nixpkgs.config = {
     packageOverrides = pkgs: {
-    linuxPackages = pkgs.linuxPackages_testing_bcachefs; # Use the latest kernel
+    linuxPackages = pkgs.linuxPackages_xanmod; # Use the latest kernel
     NUR = import NUR {
     nixos-unstable = import nixos-unstable {
     
@@ -51,7 +50,7 @@ NUR =
   boot.initrd.checkJournalingFS = true; # Check-up on the file system
   
  # Use the systemd-boot EFI boot loader.
-  boot.kernelPackages = pkgs.linuxPackages_testing_bcachefs; # Boot the kernel first
+  boot.kernelPackages = pkgs.linuxPackages_xanmod; # Boot the kernel first
   hardware.firmware = [ pkgs.alsa-firmware ]; # Initialize ALSA firmware
   boot.loader.systemd-boot.enable = true;
   systemd.services.systemd-udev-settle.enable = false;
@@ -259,7 +258,6 @@ NUR =
      openssl
      libressl
      gnupg
-     pinentry
      certbot # Renews fresh SSL certificates
      
    # Internet:
