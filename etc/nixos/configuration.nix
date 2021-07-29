@@ -315,6 +315,7 @@ NUR =
      pkgs.usbutils
      pkgs.pciutils
      pkgs.webkitgtk
+     xorg.xorgserver
      gnome.mutter # The Gnome Window Manager
      pkgs.vulkan-headers
      vulkan-loader # Load Vulkan globally
