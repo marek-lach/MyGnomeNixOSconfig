@@ -126,6 +126,12 @@ NUR =
   services.acpid.enable = true;
   services.power-profiles-daemon.enable = false;
   services.tlp.enable = true;
+  
+  # Keep the SystemD watchdong alive:
+  systemd.extraConfig = ''
+    RuntimeWatchdogSec=1m
+    ShutdownWatchdogSec=1m
+  '';
  
   # Enable the X11 windowing system.
   services.xserver.enable = true;  
