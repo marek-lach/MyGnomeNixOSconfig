@@ -310,6 +310,7 @@ NUR =
      driversi686Linux.mesa
      pkgs.wpa_supplicant
      pkgs.networkmanager
+     pkgs.update-systemd-resolved
      pkgs.bind # Domain name server resolution
      pkgs.usbutils
      pkgs.pciutils
