@@ -166,6 +166,7 @@ NUR =
   fonts.fonts = with pkgs; [
 	  pkgs.font-awesome
           pkgs.fira
+	  pkgs.fira-mono
           pkgs.montserrat
   ];
    fonts = {
