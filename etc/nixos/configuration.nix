@@ -8,8 +8,9 @@
 let
  ciSystems = [
     "x86_64-linux"
-    "aarch64-linux"
   ]; # Specifies architecture
+  
+# Import repository channel sources:
 
 nixos-unstable =
       fetchTarball
@@ -25,7 +26,7 @@ NUR =
       ./hardware-configuration.nix
     ];
 
-   # Import all the repositories:
+   # Use the imported channels as repositories:
     nixpkgs.config = {
     packageOverrides = pkgs: {
     linuxPackages = pkgs.linuxPackages_xanmod; # Use the latest kernel
@@ -45,7 +46,7 @@ NUR =
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.loader.generationsDir.copyKernels = true; # Copy the necessary boot files into /boot
   boot.extraModprobeConfig = ''
-  options snd_hda_intel power_save=2 iwlwifi power_save=N pci=realloc
+  options snd_hda_intel power_save=2 iwlwifi power_save=N pci=realloc # Prevent WiFi from disconnecting
 '';
   boot.initrd.checkJournalingFS = true; # Check-up on the file system
   
@@ -290,6 +291,7 @@ NUR =
      pkgs.flacon # Divide an audio file into songs
      pkgs.youtube-dl # An internet video downloader
      pkgs.sublime-music # A subsonic client
+     pkgs.gst_all_1.gst-plugins-base #Gstreamer
      reaper # An affordable DAW editor
      pavucontrol # PulseAudio user control     
 
