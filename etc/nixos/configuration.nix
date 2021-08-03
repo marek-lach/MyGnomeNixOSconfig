@@ -42,12 +42,20 @@ NUR =
  # Load extra kernel modules:
   boot.kernelModules = [ "acpi_call" "cryptd" "ledtrig_audio" "kvm-intel" "aesni_intel" "intel_powerclamp" "tmp_crb" "tmp_tis" "tmp_tis_core" "coretemp" "intel_cstate" "intel_uncore" "intel_spi" "intel_spi_platform" "snd_intel_dspcfg" "snd_intel_sdw_acpi" "snd_hda_codec" "intel_rapl_msr" "intel_rapl_common" "intel_pmc_bxt" "snd_hda_intel" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" "ata_piix" "uhci_hcd" ];
   boot.initrd.kernelModules = [ "dm-snapshot" "cdrom" "sr_mod" "isofs" ];
   boot.loader.generationsDir.copyKernels = true; # Copy the necessary boot files into /boot
   boot.extraModprobeConfig = ''
-  options snd_hda_intel power_save=2 iwlwifi power_save=N pci=realloc # Prevent WiFi from disconnecting
+  options snd_hda_intel iwlwifi
 '';
+  boot.kernelParams = [
+    "panic=30" "boot.panic_on_fail" # reboot the machine upon fatal boot issues
+    "console=ttyS0" # enable serial console
+    "console=tty1"
+    "pci=realloc"
+    "power_save=N" # Prevent WiFi from disconnecting
+    
+  ];
   boot.initrd.checkJournalingFS = true; # Check-up on the file system
   
  # Use the systemd-boot EFI boot loader.
