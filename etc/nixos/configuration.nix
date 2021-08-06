@@ -301,6 +301,7 @@ NUR =
      pkgs.youtube-dl # An internet video downloader
      pkgs.sublime-music # A subsonic client
      pkgs.gst_all_1.gst-plugins-base #Gstreamer
+     pkgs.bluez-alsa # ALSA Bluetooth plugin
      reaper # An affordable DAW editor
      pavucontrol # PulseAudio user control     
 
