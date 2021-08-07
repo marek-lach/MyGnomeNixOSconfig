@@ -6,10 +6,6 @@
 { config, pkgs, ... }:
 
 let
- ciSystems = [
-    "x86_64-linux"
-  ]; # Specifies architecture
-  
 # Import repository channel sources:
 
 nixos-unstable =
@@ -18,6 +14,15 @@ nixos-unstable =
 NUR = 
   fetchTarball 
     https://github.com/nix-community/NUR/archive/master.tar.gz;
+    
+inputs = {
+    # ...
+    nixpkgs-wayland  = { url = "github:colemickens/nixpkgs-wayland"; };
+
+    # only needed if you use as a package set:
+    nixpkgs-wayland.inputs.nixpkgs.follows = "cmpkgs";
+    nixpkgs-wayland.inputs.master.follows = "master";
+  };
   
  in
 {
