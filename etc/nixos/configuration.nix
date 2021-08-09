@@ -16,6 +16,21 @@ NUR =
     https://github.com/nix-community/NUR/archive/master.tar.gz;
     nur-no-pkgs = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {};
     
+    {
+  nixpkgs.config.packageOverrides = pkgs: {
+  NUR = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+      inherit pkgs;
+    };
+  };
+}
+{
+  packageOverrides = pkgs: {
+  NUR = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+      inherit pkgs; # Import Nix User Repository for the logged-in user
+    };
+  };
+}
+    
 inputs = {
     # ...
     nixpkgs-wayland  = { url = "github:colemickens/nixpkgs-wayland"; };
