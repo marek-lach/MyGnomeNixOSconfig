@@ -359,6 +359,7 @@ inputs = {
      libgnome-keyring
      qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
+     gnomeExtensions.clipboard-indicator
      cinnamon.xapps
    ];
    
