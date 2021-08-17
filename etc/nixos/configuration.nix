@@ -6,7 +6,7 @@
 { config, pkgs, ... }:
 
 let
-# Import repository channel sources:
+# Import the NixOS repository channel sources:
 
 nixos-unstable =
       fetchTarball
