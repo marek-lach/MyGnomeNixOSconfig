@@ -296,6 +296,7 @@ inputs = {
      pkgs.firefox-wayland
      pkgs.gnome-feeds # An RSS reader
      pkgs.lagrange # A Gemini client
+     pkgs.amfora # A terminal Gemini client
      pkgs.filezilla # For FTP and FTPS connections
      pkgs.transmission-gtk # P2P file transfer
      pkgs.croc # Computer-to-computer file transfer
