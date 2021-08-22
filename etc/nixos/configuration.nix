@@ -267,6 +267,7 @@ inputs = {
      pkgs.trilium-desktop # Hierarchically linked notes
      pkgs.zim # A personal knowledge base
      pkgs.obsidian # Note connections
+     pkgs.xournalpp #PDF editing & annotation
      pkgs.pandoc # A universal document converter
      pkgs.ghostscript
      tectonic # The LaTex typesetting, and rendering engine
@@ -360,6 +361,7 @@ inputs = {
      libgnome-keyring
      qgnomeplatform # QT apps to look alike with GTK
      gnomeExtensions.hide-top-bar
+     gnomeExtensions.clipboard-indicator
      cinnamon.xapps
    ];
    
