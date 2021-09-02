@@ -336,7 +336,8 @@ inputs = {
      pkgs.wget
      pkgs.unzip
      pkgs.unrar
-     gnutar
+     pkgs.gnutar
+     uutils-coreutils # GNU coreutils in Rust
      mate.engrampa # Archiver front-end
      pkgs.kitty # GPU accelerated terminal emulator
      fish # The best interactive shell
